@@ -6,7 +6,6 @@ const options = {
 };
 const client = new Client(options);
 const config = require("./config.json");
-const roles = require("./role.json");
 
 client.on('ready', async () => {
   client.user.setActivity('LOVEaim', { type: 'PLAYING' });
