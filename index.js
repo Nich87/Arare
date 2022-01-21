@@ -16,9 +16,6 @@ client.on('ready', async () => {
 require('date-utils');
 let now = new Date();
 
-//keyv
-const Keyv = require('keyv')
-
 //ping
 client.on('messageCreate', message => {
   if (message.content.includes("ping") && message.mentions.users.has(client.user.id)) {
@@ -213,7 +210,6 @@ client.on('messageCreate', async message => {
 });
 
 client.on("threadCreate",  async thread => {
-  const roles = await role.get('roleid')
   thread.send(`スレッドが作成されました。\n <@&927377284653002772>`);
 });
 
