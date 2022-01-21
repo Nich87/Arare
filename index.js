@@ -6,6 +6,7 @@ const options = {
 };
 const client = new Client(options);
 const config = require("./config.json");
+const roles = require("./role.json");
 
 client.on('ready', async () => {
   client.user.setActivity('LOVEaim', { type: 'PLAYING' });
@@ -15,6 +16,9 @@ client.on('ready', async () => {
 //時間
 require('date-utils');
 let now = new Date();
+
+//keyv
+const Keyv = require('keyv')
 
 //ping
 client.on('messageCreate', message => {
@@ -58,7 +62,6 @@ client.on('messageCreate', async message => {
 
         //メッセージを送る
         const role = message.mentions.roles.first();
-        const role2 = message.mentions.users.find((i) => i == args[0]);
         const newMessage = await message.reply(`__リアクション集計中__\n> 目標回数：${a} \n> 対象ロール：<@&${role.id}>\n> このメッセージにリアクションしてください。`)
 
         //ロールチェック
@@ -91,11 +94,6 @@ client.on('messageCreate', async message => {
     }
   }
 })
-
-//スレッド作成時自動発言
-client.on("threadCreate", (thread) => {
-  thread.send(`スレッドが作成されました。\n<@&921559497766469682> <@&921560334265901117> <@&921560552172556298>`);
-});
 
 //メッセージURL取得
 client.on('messageCreate', async message => {
@@ -200,5 +198,41 @@ client.on('messageCreate', message => {
     return;
   }
 })
+
+//ボタン
+client.on('messageCreate', async message => {
+    if (message.content.startsWith("/button")) {
+        const tic1 = new Discord.MessageButton()
+            .setURL("https://discord.gg/9YDWYkdTuE")
+            .setStyle("Link")
+            .setLabel("招待を受ける")
+        await message.channel.send({
+            content: "新しいサーバーに参加するには以下のボタンをクリックしてください。",
+            components: [new Discord.MessageActionRow().addComponents(tic1)]
+        });
+    }
+});
+
+//スレッド関連
+const role = new Keyv('sqlite://db.sqlite', { table: 'role' })
+
+role.on('error', err => console.error('Keyv connection error:', err))
+
+client.on("messageCreate", async message => {
+  if (!message.content.startsWith(prefix)) return
+  const [command, ...args] = message.content.slice(prefix.length).split(' ')
+  if (command === 'role --add') {
+    const [a, b] = args.map(str => Number(str))
+    const addrole = message.mentions.roles.first();
+
+    await role.set(`roleid`, { id: addrole.id }
+
+      await message.channel.send("次回よりスレッド開始時に" + addrole.name + "を参加させます。");
+})
+
+client.on("threadCreate", (thread) => {
+  const roles = await role.get('roleid')
+  thread.send(`スレッドが作成されました。\n<@&${roles.id}>`);
+});
 
 client.login(process.env.token);
