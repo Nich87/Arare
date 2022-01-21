@@ -201,4 +201,4 @@ client.on('messageCreate', message => {
   }
 })
 
-client.login(process.env.config.token);
+client.login("OTI3OTM5NjA4MDU3MTAyMzk4.YdRhGg.-F_ouckHbmO0Fd22j2Ea9smygls");
