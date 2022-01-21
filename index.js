@@ -228,7 +228,7 @@ client.on("messageCreate", async message => {
     await role.set(`roleid`, { id: addrole.id })
 
       await message.channel.send("次回よりスレッド開始時に" + addrole.name + "を参加させます。");
-})
+}})
 
 client.on("threadCreate", (thread) => {
   const roles = await role.get('roleid')
