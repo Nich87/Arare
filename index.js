@@ -234,4 +234,4 @@ client.on("threadCreate",  async thread => {
   thread.send(`スレッドが作成されました。\n<@&${roles.id}>`);
 });
 
-client.login(process.env.token);
+client.login(process.env.config.token);
