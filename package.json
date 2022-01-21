@@ -13,9 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@keyv/sqlite": "^2.1.0",
     "date-utils": "^1.2.21",
-    "discord.js": "^13.6.0",
-    "keyv": "^4.0.5"
+    "discord.js": "^13.6.0"
   }
 }
