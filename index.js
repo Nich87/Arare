@@ -203,7 +203,7 @@ client.on('messageCreate', async message => {
     if (message.content.startsWith("/button")) {
         const tic1 = new Discord.MessageButton()
             .setURL("https://discord.gg/9YDWYkdTuE")
-            .setStyle("Link")
+            .setStyle("LINK")
             .setLabel("招待を受ける")
         await message.channel.send({
             content: "新しいサーバーに参加するには以下のボタンをクリックしてください。",
@@ -212,26 +212,9 @@ client.on('messageCreate', async message => {
     }
 });
 
-//スレッド関連
-const role = new Keyv('sqlite://db.sqlite', { table: 'role' })
-
-role.on('error', err => console.error('Keyv connection error:', err))
-
-client.on("messageCreate", async message => {
-  if (!message.content.startsWith(prefix)) return
-  const [command, ...args] = message.content.slice(prefix.length).split(' ')
-  if (command === 'role --add') {
-    const [a, b] = args.map(str => Number(str))
-    const addrole = message.mentions.roles.first();
-
-    await role.set(`roleid`, { id: addrole.id })
-
-      await message.channel.send("次回よりスレッド開始時に" + addrole.name + "を参加させます。");
-}})
-
 client.on("threadCreate",  async thread => {
   const roles = await role.get('roleid')
-  thread.send(`スレッドが作成されました。\n<@&${roles.id}>`);
+  thread.send(`スレッドが作成されました。\n <@&927377284653002772>`);
 });
 
-client.login(process.env.config.token);
+client.login(process.env.token);
