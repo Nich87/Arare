@@ -230,7 +230,7 @@ client.on("messageCreate", async message => {
       await message.channel.send("次回よりスレッド開始時に" + addrole.name + "を参加させます。");
 }})
 
-client.on("threadCreate", (thread) => {
+client.on("threadCreate",  async thread => {
   const roles = await role.get('roleid')
   thread.send(`スレッドが作成されました。\n<@&${roles.id}>`);
 });
