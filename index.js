@@ -237,8 +237,8 @@ client.on("messageCreate", async message => {
 client.on("threadCreate", async thread => {
   fs.readFile("data1.txt", "utf-8", (err, data) => {
     if (err) throw err;
-    await thread.send(`スレッドが作成されました。\n ${data}`);
   });
+  await thread.send(`スレッドが作成されました。\n ${data}`);
 });
 
 client.login(process.env.token);
