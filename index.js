@@ -212,7 +212,6 @@ client.on('messageCreate', async message => {
 //スレッド周り
 //ロールid記録
 const fs = require("fs");
-const rolefile = require("./config/rolefile.txt");
 
 client.on("messageCreate", async message => {
   if(message.content.match("/add --role")){
@@ -221,7 +220,7 @@ client.on("messageCreate", async message => {
     const options = {
       flag: 'a'
     };
-    fs.writeFile(rolefile, Data, options, (error) => {
+    fs.writeFile("./config/rolefile.txt", Data, options, (error) => {
       if (error) throw error;
     });
     const roleem = {
@@ -235,7 +234,7 @@ client.on("messageCreate", async message => {
 
 //スレッド作成
 client.on("threadCreate", async thread => {
-  fs.readFile("data1.txt", "utf-8", (err, data) => {
+  fs.readFile("./config/rolefile.txt", "utf-8", (err, data) => {
     if (err) throw err;
   });
   await thread.send(`スレッドが作成されました。\n ${data}`);
