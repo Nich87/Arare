@@ -209,8 +209,36 @@ client.on('messageCreate', async message => {
     }
 });
 
+//スレッド周り
+//ロールid記録
+const fs = require("fs");
+const rolefile = require("./config/rolefile.txt");
+
+client.on("messageCreate", async message => {
+  if(message.content.match("/add --role")){
+    const role = message.mentions.roles.first();
+    const Data = `<@&${role.id}> `;
+    const options = {
+      flag: 'a'
+    };
+    fs.writeFile(rolefile, Data, options, (error) => {
+      if (error) throw error;
+      const roleem = {
+        "description": `${role.name}`,
+        "color": 3644650,
+        "timestamp": new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000)).toFormat("MM月DD日 HH24:MI")
+      };
+      async message.reply("configファイル```rolefile.txt```に以下の内容で保存しました。\n", { embeds: [roleem] })
+    });
+  }
+});
+
+//スレッド作成
 client.on("threadCreate",  async thread => {
-  thread.send(`スレッドが作成されました。\n <@&927377284653002772>`);
+  fs.readFile("data1.txt", "utf-8", (err, data) => {
+    if (err) throw err;
+    await thread.send(`スレッドが作成されました。\n ${data}`);
+  });
 });
 
 client.login(process.env.token);
