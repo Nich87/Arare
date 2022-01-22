@@ -221,9 +221,6 @@ client.on("messageCreate", async message => {
     const options = {
       flag: 'a'
     };
-    fs.writeFile("./config/rolefile.txt", Data, options, (error) => {
-      if (error) throw error;
-    });
     const roleem = {
       "description": `${role.name}`,
       "color": 3644650,
