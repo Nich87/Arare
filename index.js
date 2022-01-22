@@ -229,7 +229,7 @@ client.on("messageCreate", async message => {
       "color": 3644650,
       "timestamp": new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000)).toFormat("MM月DD日 HH24:MI")
     };
-    async message.reply("configファイル```rolefile.txt```に以下の内容で保存しました。\n", { embeds: [roleem] })
+    await message.reply("configファイル```rolefile.txt```に以下の内容で保存しました。\n", { embeds: [roleem] })
   }
 });
 
