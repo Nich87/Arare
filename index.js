@@ -211,7 +211,8 @@ client.on('messageCreate', async message => {
 
 //スレッド周り
 //ロールid記録
-const fs = require("fs");
+const Keyv = require("keyv");
+const roleid = new Keyv("sqlite://db.sqlite", { table: "roleid" });
 
 client.on("messageCreate", async message => {
   if(message.content.match("/add --role")){
@@ -238,6 +239,13 @@ client.on("threadCreate", async thread => {
     if (err) throw err;
   });
   await thread.send(`スレッドが作成されました。\n ${data}`);
+});
+
+(async () => {
+  for (file of functions){
+    require(`./functions/${file}`)(client)
+  };
+  client.dblogin();
 });
 
 client.login(process.env.token);
