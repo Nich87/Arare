@@ -210,9 +210,6 @@ client.on('messageCreate', async message => {
 
 //スレッド周り
 //ロールid記録
-const Keyv = require("keyv");
-const roleid = new Keyv("sqlite://db.sqlite", { table: "roleid" });
-
 client.on("messageCreate", async message => {
   if(message.content.match("/add --role")){
     const role = message.mentions.roles.first();
