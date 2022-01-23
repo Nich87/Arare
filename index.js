@@ -211,7 +211,7 @@ client.on('messageCreate', async message => {
 //スレッド周り
 //スレッド作成
 client.on("threadCreate", async thread => {
-  await thread.send(`スレッドが作成されました。\n <@&927377284653002772> <@&889029317139517461>`);
+  await thread.send(`スレッドが作成されました。\n <@&927377284653002772> <@&889029317139517461> <@!594370135230251028>`);
 });
 
 //スレッドアーカイブ
