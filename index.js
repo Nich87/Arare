@@ -234,11 +234,4 @@ client.on("threadCreate", async thread => {
   await thread.send(`スレッドが作成されました。\n ${data}`);
 });
 
-(async () => {
-  for (file of functions){
-    require(`./functions/${file}`)(client)
-  };
-  client.dblogin();
-});
-
 client.login(process.env.token);
