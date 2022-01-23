@@ -214,19 +214,20 @@ client.on("threadCreate", async thread => {
   await thread.send(`スレッドが作成されました。\n <@&927377284653002772> <@&889029317139517461> <@!594370135230251028>`);
 });
 
-//スレッドアーカイブ
-client.on("threadUpdate", async thread => {
-    thread.parent.send(`スレッド${thread.name}${thread.archived ? "のアーカイブは解除されました。" : "はアーカイブされました。"}`)
-});
-
 //スレッド削除
 client.on("threadDelete", async thread => {
     thread.parent.send(`スレッド${thread.name}は削除されました。`)
 });
 
+//スレッドアーカイブ
 //スレッド名前変更
 client.on("threadUpdate", async thread => {
-  thread.parent.send(`スレッド${Oldthread.name}は${Newthread.name}に変更されました。`)
+  if (oldThread.name == newThread.name) {
+    thread.parent.send(`スレッド${thread.name}${thread.archived ? "のアーカイブは解除されました。" : "はアーカイブされました。"}`)
+  };
+  if (oldThread.archived == newThread.archived) {
+    thread.parent.send(`スレッド${Oldchannel.name}は${Newchannel.name}に変更されました。`)
+  };
 })
 
 client.login(process.env.token);
