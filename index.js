@@ -224,10 +224,10 @@ client.on("threadDelete", async thread => {
 client.on("threadUpdate", async (oldThread, newThread) => {
   const status = oldThread == newThread;
   if (status == false) {
-    thread.parent.send(`スレッド${Oldchannel.name}は${Newchannel.name}に変更されました。`)
+    newThread.parent.send(`スレッド${oldThread.name}は${newThread.name}に変更されました。`)
   };
   if (status == true) {
-    thread.parent.send(`スレッド${thread.name}${thread.archived ? "のアーカイブは解除されました。" : "はアーカイブされました。"}`)
+    newThread.parent.send(`スレッド${newThread.name}${newThread.archived ? "のアーカイブは解除されました。" : "はアーカイブされました。"}`)
   };
 });
 
