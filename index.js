@@ -222,7 +222,7 @@ client.on("threadDelete", async thread => {
 //スレッドアーカイブ
 //スレッド名前変更
 client.on("threadUpdate", async (oldThread, newThread) => {
-  const status = oldThread == newThread;
+  const status = oldThread.archived == newThread.archived;
   if (status == false) {
     newThread.parent.send(`スレッド${oldThread.name}は${newThread.name}に変更されました。`)
   };
