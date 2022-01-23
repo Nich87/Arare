@@ -12,7 +12,6 @@ client.on('ready', async () => {
   client.user.setActivity('LOVEaim', { type: 'PLAYING' });
   console.log(`${client.user.tag}にログインしました。`);
   await mongoose.connect(mongoPath)
-  return mongoose
   .then(mongoose => {
     try {
       console.log("MongoDBに接続しました。")
