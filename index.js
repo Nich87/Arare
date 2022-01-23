@@ -17,7 +17,7 @@ client.on('ready', async () => {
     try {
       console.log("MongoDBに接続しました。")
     }
-    final {
+    finally {
       mongoose.connection.close();
     }
   })
