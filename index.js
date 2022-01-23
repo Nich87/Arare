@@ -227,7 +227,7 @@ client.on("threadUpdate", async (oldThread, newThread) => {
     newThread.parent.send(`スレッド${oldThread.name}は${newThread.name}に変更されました。`)
   };
   if (status == false) {
-    newThread.parent.send(`スレッド${newThread.name}${newThread.archived ? "のアーカイブは解除されました。" : "はアーカイブされました。"}`)
+    newThread.parent.send(`スレッド${newThread.name}${newThread.archived ? "はアーカイブされました。" : "のアーカイブは解除されました。"}`)
   };
 });
 
