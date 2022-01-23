@@ -222,13 +222,13 @@ client.on("threadDelete", async thread => {
 //スレッドアーカイブ
 //スレッド名前変更
 client.on("threadUpdate", async thread => {
-  const status = (oldThread.name == newThread.name);
-  if (statu == true) {
-    thread.parent.send(`スレッド${thread.name}${thread.archived ? "のアーカイブは解除されました。" : "はアーカイブされました。"}`)
-  };
+  const status = (oldThread.archved == newThread.archved);
   if (statu == false) {
     thread.parent.send(`スレッド${Oldchannel.name}は${Newchannel.name}に変更されました。`)
   };
-})
+  if (statu == true) {
+    thread.parent.send(`スレッド${thread.name}${thread.archived ? "のアーカイブは解除されました。" : "はアーカイブされました。"}`)
+  };
+});
 
 client.login(process.env.token);
