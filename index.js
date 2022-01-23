@@ -208,10 +208,18 @@ client.on('messageCreate', async message => {
     }
 });
 
+client.on("messageCreate", async message => {
+  if (message.content.startsWith("/add -role")) {
+    const list = message.mentions.members();
+    const role = message.mentions.roles.fist();
+    await message.${list}.roles.add(role.id);
+  } else {
+    return;
+  };
+});
+
 //スレッド周り
 //ロールid記録
-
-
 //スレッド作成
 client.on("threadCreate", async thread => {
   fs.readFile("./config/rolefile.txt", "utf-8", (err, data) => {
