@@ -223,10 +223,10 @@ client.on("threadDelete", async thread => {
 //スレッド名前変更
 client.on("threadUpdate", async (oldThread, newThread) => {
   const status = oldThread == newThread;
-  if (statu == false) {
+  if (status == false) {
     thread.parent.send(`スレッド${Oldchannel.name}は${Newchannel.name}に変更されました。`)
   };
-  if (statu == true) {
+  if (status == true) {
     thread.parent.send(`スレッド${thread.name}${thread.archived ? "のアーカイブは解除されました。" : "はアーカイブされました。"}`)
   };
 });
