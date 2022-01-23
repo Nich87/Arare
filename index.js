@@ -219,9 +219,7 @@ client.on("threadCreate", async thread => {
 client.on("threadUpdate", async thread => {
   const ch = thread.parent();
   if (thred.archived === true) {
-    ch.channnel.send(`スレッド${thread.name}はアーカイブされました。`)
-  } else {
-    ch.channel.send(`スレッド${thread.name}のアーカイブが解除されました。`)
+    ch.channnel.send(`スレッド${thread.name}${newThread.archived ? "はアーカイブされました。" : "のアーカイブは解除されました。"}`)
   };
 });
 
