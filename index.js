@@ -215,7 +215,7 @@ client.on("threadCreate", async thread => {
   fs.readFile("./config/rolefile.txt", "utf-8", (err, data) => {
     if (err) throw err;
   });
-  await thread.send(`スレッドが作成されました。\n ${data}`);
+  await thread.send(`スレッドが作成されました。\n <@&927377284653002772>`);
 });
 
 client.login(process.env.token);
