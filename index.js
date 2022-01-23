@@ -217,7 +217,7 @@ client.on("threadCreate", async thread => {
 
 //その他
 client.on("threadUpdate", async thread => {
-    thread.parent.send(`スレッド${thread.name}${thread.archived ? "はアーカイブされました。" : "のアーカイブは解除されました。"}`)
+    thread.parent.send(`スレッド${thread.name}${thread.archived ? "のアーカイブは解除されました。 : "はアーカイブされました。"}`)
 });
 
 client.login(process.env.token);
