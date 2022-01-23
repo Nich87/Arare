@@ -126,7 +126,7 @@ client.on('messageCreate', async message => {
 
 //kickコマンド
 client.on('messageCreate', async message => {
-  if (message.content.startsWith('/kick') && message.guild) {
+  if (message.content.startsWith('/love-kick') && message.guild) {
     if (message.mentions.members.size !== 1)
       return message.channel.send('Kickするメンバーを1人指定してください')
     const member = message.mentions.members.first()
@@ -139,7 +139,7 @@ client.on('messageCreate', async message => {
 
 //banコマンド
 client.on('messageCreate', async message => {
-  if (message.content.startsWith('/ban') && message.guild) {
+  if (message.content.startsWith('/love-ban') && message.guild) {
     if (message.mentions.members.size !== 1)
       return message.channel.send('Banするメンバーを1人指定してください')
     const member = message.mentions.members.first('')
