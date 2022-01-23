@@ -222,7 +222,7 @@ client.on("threadDelete", async thread => {
 //スレッドアーカイブ
 //スレッド名前変更
 client.on("threadUpdate", async thread => {
-  const status = (oldThread.archved == newThread.archved);
+  const status = async (oldThread,newThread);
   if (statu == false) {
     thread.parent.send(`スレッド${Oldchannel.name}は${Newchannel.name}に変更されました。`)
   };
