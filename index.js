@@ -5,10 +5,22 @@ const options = {
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS"],
 };
 const client = new Client(options);
+const mongoose = require("mongoose");
+const { mongoPath } = require("./config.json");
 
 client.on('ready', async () => {
   client.user.setActivity('LOVEaim', { type: 'PLAYING' });
   console.log(`${client.user.tag}にログインしました。`);
+  await mongoose.connect(mongoPath)
+  return mongoose
+  .then(mongoose => {
+    try {
+      console.log("MongoDBに接続しました。")
+    }
+    final {
+      mongoose.connection.close();
+    }
+  })
 });
 
 //時間
@@ -230,5 +242,8 @@ client.on("threadUpdate", async (oldThread, newThread) => {
     newThread.parent.send(`スレッド${newThread.name}${newThread.archived ? "はアーカイブされました。" : "のアーカイブは解除されました。"}`)
   };
 });
+
+//記録
+
 
 client.login(process.env.token);
