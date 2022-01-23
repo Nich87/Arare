@@ -210,19 +210,21 @@ client.on('messageCreate', async message => {
 
 //スレッド周り
 //ロールid記録
+const fs = require("fs");
+
 client.on("messageCreate", async message => {
   if(message.content.match("/add --role")){
     const role = message.mentions.roles.first();
     const Data = `<@&${role.id}> `;
-    const options = {
-      flag: 'a'
+    const writedata = async ("./") => {
+      await fs.writeFile(id, Data)
     };
     const roleem = {
       "description": `${role.name}`,
       "color": 3644650,
       "timestamp": new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000)).toFormat("MM月DD日 HH24:MI")
     };
-    await message.reply("configファイル```rolefile.txt```に以下の内容で保存しました。\n", { embeds: [roleem] })
+    await message.reply("configファイル```rolefile.json```に以下の内容で保存しました。\n", { embeds: [roleem] })
   }
 });
 
