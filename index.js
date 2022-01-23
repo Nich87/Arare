@@ -209,15 +209,20 @@ client.on('messageCreate', async message => {
 });
 
 //スレッド周り
-//ロールid記録
 //スレッド作成
 client.on("threadCreate", async thread => {
   await thread.send(`スレッドが作成されました。\n <@&927377284653002772> <@&889029317139517461>`);
 });
 
+//スレッドアーカイブ
 //その他
 client.on("threadUpdate", async thread => {
     thread.parent.send(`スレッド${thread.name}${thread.archived ? "のアーカイブは解除されました。" : "はアーカイブされました。"}`)
+});
+
+//スレッドロック
+client.on("threadDelete", async thread => {
+    thread.parent.send(`スレッド${thread.name}は削除されました。`)
 });
 
 client.login(process.env.token);
