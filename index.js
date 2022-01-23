@@ -215,14 +215,18 @@ client.on("threadCreate", async thread => {
 });
 
 //スレッドアーカイブ
-//その他
 client.on("threadUpdate", async thread => {
     thread.parent.send(`スレッド${thread.name}${thread.archived ? "のアーカイブは解除されました。" : "はアーカイブされました。"}`)
 });
 
-//スレッドロック
+//スレッド削除
 client.on("threadDelete", async thread => {
     thread.parent.send(`スレッド${thread.name}は削除されました。`)
 });
+
+//スレッド名前変更
+client.on("threadUpdate", async thread => {
+  thread.parent.send(`スレッド${Oldthread.name}は${Newthread.name}に変更されました。`)
+})
 
 client.login(process.env.token);
