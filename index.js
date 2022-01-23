@@ -215,7 +215,17 @@ client.on("threadCreate", async thread => {
   fs.readFile("./config/rolefile.txt", "utf-8", (err, data) => {
     if (err) throw err;
   });
-  await thread.send(`スレッドが作成されました。\n <@&927377284653002772>`);
+  await thread.send(`スレッドが作成されました。\n <@&927377284653002772> <@&>`);
+});
+
+//その他
+client.on("threadUpdate", async thread => {
+  const ch = thread.parent();
+  if (thred.archived === true) {
+    ch.channnel.send(`スレッド${thread.name}はアーカイブされました。`)
+  } else {
+    ch.channel.send(`スレッド${thread.name}のアーカイブが解除されました。`)
+  };
 });
 
 client.login(process.env.token);
