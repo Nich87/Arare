@@ -68,7 +68,7 @@ client.on('messageCreate', async message => {
 
         //メッセージを送る
         const role = message.mentions.roles.first();
-        const newMessage = await message.reply(`__リアクション集計中__\n> 目標回数：${a} \n> 対象ロール：<@&${role.id}>\n> このメッセージにリアクションしてください。`)
+        const newMessage = await message.reply(`__リアクション集計中__\n> 目標回数：${a} \n> 対象ロール：<@&${role.name}>\n> このメッセージにリアクションしてください。`)
 
         //ロールチェック
         const filter = async (reaction, user) => {
@@ -77,7 +77,7 @@ client.on('messageCreate', async message => {
 
         //リアクション待ち
         const Embed = {
-          color: 0x0099ff,
+          color: 16723932,
           title: 'リアクション集計完了',
           fields: [
             {
@@ -187,14 +187,20 @@ client.on('messageCreate', message => {
       "value": "指定した回数のリアクションを集計します。\nただし、指定したロール以外がリアクションをしてもカウントされません。"
     },
     {
-      "name": "スレッド作成時自動発言",
-      "value": "スレッドが作成されると\n自動的に運営とnoshAさんに\n通知します。",
-      "inline": true
+      "name": "スレッド関連",
+      "value": "以下の条件で自動的に運営とnoshAさんに通知します。\n> スレッド作成\n> アーカイブと解除\n> スレッド削除"
     },
     {
       "name": "メッセージURL取得",
-      "value": "URL先のメッセージの内容を\n取得します。",
-      "inline": true
+      "value": "URL先のメッセージの内容を取得します。"
+    },
+    {
+      "name": "/love-ban @ユーザー",
+      "value": "指定したメンバーをBANします。\n権限が必要です。"
+    },
+    {
+      "name": "/love-kick @ユーザー",
+      "value": "指定したメンバーをKICKします。\n権限が必要です。"
     }
   ]
     };
