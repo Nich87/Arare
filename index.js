@@ -123,7 +123,7 @@ client.on('messageCreate', async message => {
         color: 16727276,
         footer: {
           icon_url: `${msg.guild.iconURL()}`,
-          text: {createdAt : new Date() }(msg.createdAt.toLocalString().toFormat("MM月DD日 HH24:MI"))
+          text: `${msg.createdAt.toLocaleString('ja-jp', {timeZone: 'Asia/Tokyo'})}`
         },
         author: {
           name: `${msg.author.username}`,
