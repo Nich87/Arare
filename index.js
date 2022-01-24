@@ -68,7 +68,7 @@ client.on('messageCreate', async message => {
 
         //メッセージを送る
         const role = message.mentions.roles.first();
-        const newMessage = await message.reply(`__リアクション集計中__\n> 目標回数：${a} \n> 対象ロール：<@&${role.name}>\n> このメッセージにリアクションしてください。`)
+        const newMessage = await message.reply(`__リアクション集計中__\n> 目標回数：${a} \n> 対象ロール：${role.name}\n> このメッセージにリアクションしてください。`)
 
         //ロールチェック
         const filter = async (reaction, user) => {
