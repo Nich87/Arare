@@ -117,15 +117,13 @@ client.on('messageCreate', async message => {
     return;
   }
 
-const msgdate = { createdAt : new Date() };
-
   channelch.messages.fetch(message_id)
     .then(msg => message.reply({
       embeds: [{
         color: 16727276,
         footer: {
           icon_url: `${msg.guild.iconURL()}`,
-          text: msgdate.createdAt.toLocalString().toFormat("MM月DD日 HH24:MI")
+          text: new Date(msgdate.createdAt.toLocalString().toFormat("MM月DD日 HH24:MI"))
         },
         author: {
           name: `${msg.author.username}`,
