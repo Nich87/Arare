@@ -75,7 +75,7 @@ client.on('messageCreate', async message => {
           return (await message.guild ?.members.fetch(user.id).then((member) => member.roles.cache.has(role.id))) ?? false;
         };
 
-        //リアクション待ち
+        //埋め込み
         const Embed = {
           color: 16723932,
           title: 'リアクション集計完了',
