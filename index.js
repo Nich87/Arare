@@ -1,24 +1,16 @@
-const fs = require('fs')
-const { Client, Intents } = require('discord.js');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
-const commands = {}
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'))
-for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-    commands[command.data.name] = command
-}
-
+const prefix = '/';
+const Discord = require("discord.js");
+const { Intents, Client, MessageEmbed, MessageActionRow, MessageSelectMenu } = require("discord.js");
+const options = {
+  intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS"],
+};
+const client = new Client(options);
 const mongoose = require("mongoose");
 const { mongoPath } = require("./config.json");
 
 client.on('ready', async () => {
   client.user.setActivity('LOVEaim', { type: 'PLAYING' });
   console.log(`${client.user.tag}にログインしました。`);
-  const data = []
-  for (const commandName in commands) {
-    data.push(commands[commandName].data)
-  };
-await client.application.commands.set(data, `${guild.id}`);
   await mongoose.connect(mongoPath)
   .then(mongoose => {
     try {
