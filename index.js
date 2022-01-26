@@ -44,7 +44,10 @@ client.on('messageCreate', message => {
   else {
     return;
   }
-})
+});
+
+//集計中メッセージのIDを登録
+const messageIdList = new Set();
 
 //カウント集計
 client.on('messageCreate', async message => {
@@ -69,6 +72,15 @@ client.on('messageCreate', async message => {
         //メッセージを送る
         const role = message.mentions.roles.first();
         const newMessage = await message.reply(`__リアクション集計中__\n> 目標回数：${a} \n> 対象ロール：${role.name}\n> このメッセージにリアクションしてください。`)
+        const collector = message.createReactionCollector({time : 15000});
+        //集計完了
+        collector.on("end", collected => collectEnd(collected, collector));
+        //集計中のメッセージをリストに登録しておく
+        messageIdList.add(newMessage.id);
+        //集計完了後の動作定義
+        function collectEnd(collected, collector) {
+          messageIdList.delete(collector.newMessage.id);
+        }
 
         //ロールチェック
         const filter = async (reaction, user) => {
@@ -99,6 +111,10 @@ client.on('messageCreate', async message => {
       }
     }
   }
+  if (command === 'list') {
+  message.channel.send(messageIdList);
+  return;
+}
 })
 
 //メッセージ取得
@@ -246,33 +262,6 @@ client.on("threadUpdate", async (oldThread, newThread) => {
   if (status == false) {
     newThread.parent.send(`スレッド${newThread.name}${newThread.archived ? "はアーカイブされました。" : "のアーカイブが解除されました。"}`)
   };
-});
-
-//スラッシュコマンドテスト
-client.once("ready", async () => {
-    const data = [{
-        name: "ping",
-        description: "現在のping値を取得します。",
-    }];
-    await client.application.commands.set(data, '888981896594350132');
-});
-
-client.on("interactionCreate", async (interaction) => {
-    if (!interaction.isCommand()) {
-        return;
-    }
-    if (interaction.commandName === 'ping') {
-      const pingem = {
-        "color": 16737977,
-        "fields": [
-          {
-            "name": "📡Bot反応時間",
-            "value": "現在のPing値は" + client.ws.ping + "msです。"
-          }
-        ]
-      };
-      await interaction.reply({ embeds: [pingem] })
-    }
 });
 
 client.login(process.env.token);
