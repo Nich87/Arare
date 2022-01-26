@@ -2,7 +2,7 @@ const prefix = '/';
 const Discord = require("discord.js");
 const { Intents, Client, MessageEmbed, MessageActionRow, MessageSelectMenu } = require("discord.js");
 const options = {
-  intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS"],
+  intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS", Object.keys(Discord.Intents.FLAGS)],
 };
 const client = new Client(options);
 const mongoose = require("mongoose");
