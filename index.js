@@ -112,7 +112,7 @@ client.on('messageCreate', async message => {
     }
   }
   if (command === 'list') {
-  message.channel.send(`現在受け付けているカウント集計は以下の通りです。${messageIdList}`);
+  console.log(`現在受け付けているカウント集計は以下の通りです。${messageIdList}`);
   return;
 }
 })
