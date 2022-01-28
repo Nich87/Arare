@@ -113,7 +113,7 @@ client.on('messageCreate', async message => {
         "description": `${messageIdList}`,
         "color": 16491101
 };
-    message.reply({ embeds: [Embed] })
+    message.reply({ embeds: [embed] })
   return;
 }
 });
