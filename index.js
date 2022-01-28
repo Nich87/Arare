@@ -72,38 +72,46 @@ client.on('messageCreate', async message => {
         //メッセージを送る
         const role = message.mentions.roles.first();
         const newMessage = await message.reply(`__リアクション集計中__\n> 目標回数：${a} \n> 対象ロール：${role.name}\n> このメッセージにリアクションしてください。`)
-        const collector = message.createReactionCollector({time : 15000});
-        //集計完了
-        collector.on("end", collected => collectEnd(collected, collector));
-        //集計中のメッセージをリストに登録しておく
-        messageIdList.add(newMessage.url);
 
         //ロールチェック
         const filter = async (reaction, user) => {
           return (await message.guild ?.members.fetch(user.id).then((member) => member.roles.cache.has(role.id))) ?? false;
         };
 
-        //埋め込み
-        const Embed = {
-          color: 16723932,
-          title: 'リアクション集計完了',
-          fields: [
-            {
-              name: '集計したリンク',
-              value: `${message.url}`,
-            },
-            {
-              name: '終了時刻',
-              value: new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000)).toFormat("M月D日 H24時M分"),
-            },
-          ],
-          footer: {
-            text: `対象ロール：${role.name}`,
-            icon_url: '',
-          },
-        };
-        newMessage.awaitReactions({ filter, max: `${a}` })
-          .then(collected => message.reply('リアクションの集計が完了しました。') && message.reply({ embeds: [Embed] }) && newMessage.delete());
+        const collector = message.createReactionCollector({ filter, Max: `${a}`});
+        //集計完了
+        collector.on("end", collected => collectEnd(collected, collector));
+        //集計中のメッセージをリストに登録しておく
+        messageIdList.add(newMessage.url);
+        //集計完了後の動作定義
+        function collectEnd(collected, collector) {
+              console.log("reactionCollector End");
+              //集計中のメッセージリストから除去
+              messageIdList.delete(collector.message.url);
+              //collectedにはMessageReactionのCollectionが入っている。
+              console.log(collected.keys());
+              console.log(messageIdList);
+              //埋め込み
+              const Embed = {
+                color: 16723932,
+                title: 'リアクション集計完了',
+                fields: [
+                  {
+                    name: '集計したリンク',
+                    value: `${message.url}`,
+                  },
+                  {
+                    name: '終了時刻',
+                    value: new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000)).toFormat("M月D日 H24時M分"),
+                  },
+                ],
+                footer: {
+                  text: `対象ロール：${role.name}`,
+                  icon_url: '',
+                },
+              };
+              message.reply('リアクションの集計が完了しました。') && message.reply({ embeds: [Embed] }) && newMessage.delete());
+        }
       }
     }
   }
@@ -117,16 +125,6 @@ client.on('messageCreate', async message => {
   return;
 }
 });
-
-//集計完了後の動作定義
-function collectEnd(collected, collector) {
-      console.log("reactionCollector End");
-      //集計中のメッセージリストから除去
-      messageIdList.delete(collector.message.url);
-      //collectedにはMessageReactionのCollectionが入っている。
-      console.log(collected.keys());
-      console.log(messageIdList);
-}
 
 //メッセージ取得
 client.on('messageCreate', async message => {
