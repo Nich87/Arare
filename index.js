@@ -110,7 +110,7 @@ client.on('messageCreate', async message => {
                   icon_url: '',
                 },
               };
-              message.reply('リアクションの集計が完了しました。') && message.reply({ embeds: [Embed] }) && newMessage.delete());
+              message.reply(('リアクションの集計が完了しました。') && message.reply({ embeds: [Embed] }) && newMessage.delete());
         }
       }
     }
