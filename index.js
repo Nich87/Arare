@@ -109,10 +109,11 @@ client.on('messageCreate', async message => {
   }
   if (command === 'list') {
       const embed = {
+        "title": "現在受け付けているカウント集計一覧"
         "description": `${messageIdList}`,
         "color": 16491101
 };
-    message.reply("現在受け付けているカウント集計", { embeds: [Embed] })
+    message.reply({ embeds: [Embed] })
   return;
 }
 });
