@@ -47,7 +47,7 @@ client.on('messageCreate', message => {
 });
 
 //集計中メッセージのIDを登録
-const messageIdList = new Set();
+let messageIdList = new Set();
 
 //カウント集計
 client.on('messageCreate', async message => {
