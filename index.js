@@ -94,7 +94,7 @@ client.on('messageCreate', async message => {
             },
             {
               name: '終了時刻',
-              value: new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000)).toFormat("MM月DD日 HH24時MI分"),
+              value: new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000)).toFormat("M月D日 H24時M分"),
             },
           ],
           footer: {
@@ -150,7 +150,7 @@ client.on('messageCreate', async message => {
         color: 16727276,
         footer: {
           icon_url: `${msg.guild.iconURL()}`,
-          text: `${msg.createdAt.toFormat("M月d日 H時m分")}`
+          text: `${msg.createdAt.toFormat("M月D日 H時M分")}`
         },
         author: {
           name: `${msg.author.username}`,
