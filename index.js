@@ -78,7 +78,7 @@ client.on('messageCreate', async message => {
           return (await message.guild ?.members.fetch(user.id).then((member) => member.roles.cache.has(role.id))) ?? false;
         };
 
-        const collector = message.createReactionCollector({ filter, Max: `${a}`});
+        const collector = newMessage.createReactionCollector({ filter, max: `${a}`});
         //集計完了
         collector.on("end", collected => collectEnd(collected, collector));
         //集計中のメッセージをリストに登録しておく
