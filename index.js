@@ -102,7 +102,7 @@ client.on('messageCreate', async message => {
                   },
                   {
                     name: '終了時刻',
-                    value: new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000)).toFormat("M月D日 H24時M分"),
+                    value: new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000)).toFormat("M月D日 H時MI分"),
                   },
                 ],
                 footer: {
@@ -118,7 +118,7 @@ client.on('messageCreate', async message => {
   if (command === 'list') {
       const embed = {
         "title": "現在受け付けているカウント集計一覧",
-        "description": `${messageIdList}`,
+        "description": `${System.out.println(map.get(Set))}`,
         "color": 16491101
 };
     message.reply({ embeds: [embed] })
@@ -148,7 +148,7 @@ client.on('messageCreate', async message => {
         color: 16727276,
         footer: {
           icon_url: `${msg.guild.iconURL()}`,
-          text: `${msg.createdAt.toFormat("M月D日 H24時MI分")}`
+          text: `${msg.createdAt.toFormat("M月D日 H時MI分")}`
         },
         author: {
           name: `${msg.author.username}`,
