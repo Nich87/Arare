@@ -112,7 +112,7 @@ client.on('messageCreate', async message => {
         "description": `${messageIdlist}`,
         "color": 16491101
 };
-    message.reply("現在受け付けているカウント集計" { embeds: [Embed] })
+    message.reply("現在受け付けているカウント集計", { embeds: [Embed] })
   return;
 }
 });
