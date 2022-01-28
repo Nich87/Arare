@@ -150,7 +150,7 @@ client.on('messageCreate', async message => {
         color: 16727276,
         footer: {
           icon_url: `${msg.guild.iconURL()}`,
-          text: `${msg.createdAt.toFormat("MM月DD日 HH24時MI分")}`
+          text: `${msg.createdAt.toFormat("M月d日 H時m分")}`
         },
         author: {
           name: `${msg.author.username}`,
