@@ -116,9 +116,10 @@ client.on('messageCreate', async message => {
     }
   }
   if (command === 'list') {
+      const listurl = messageIdList.values();
       const embed = {
         "title": "現在受け付けているカウント集計一覧",
-        "description": `${System.out.println(map.get(Set))}`,
+        "description": `${listurl.next().value}`,
         "color": 16491101
 };
     message.reply({ embeds: [embed] })
