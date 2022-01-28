@@ -77,10 +77,6 @@ client.on('messageCreate', async message => {
         collector.on("end", collected => collectEnd(collected, collector));
         //集計中のメッセージをリストに登録しておく
         messageIdList.add(newMessage.id);
-        //集計完了後の動作定義
-        function collectEnd(collected, collector) {
-          messageIdList.delete(collector.newMessage.id);
-        }
 
         //ロールチェック
         const filter = async (reaction, user) => {
@@ -115,7 +111,17 @@ client.on('messageCreate', async message => {
   console.log(`現在受け付けているカウント集計は以下の通りです。${messageIdList}`);
   return;
 }
-})
+});
+
+//集計完了後の動作定義
+function collectEnd(collected, collector) {
+      console.log("reactionCollector End");
+      //集計中のメッセージリストから除去
+      messageIdList.delete(collector.message.id);
+      //collectedにはMessageReactionのCollectionが入っている。
+      console.log(collected.keys());
+      console.log(messageIdList);
+}
 
 //メッセージ取得
 client.on('messageCreate', async message => {
