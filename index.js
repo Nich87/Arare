@@ -118,12 +118,7 @@ client.on('messageCreate', async message => {
   if (command === 'list') {
       const listurl = messageIdList.values();
       if (listurl === undefined){
-        const embed = {
-          "title": "現在受け付けているカウント集計一覧",
-          "description": `現在受け付けているカウント集計はありません。`,
-          "color": 16491101
-        };
-        message.reply({ embeds: [embed] })
+        message.reply("現在受け付けているカウント集計はありません。")
         return;
       };
       const embed = {
