@@ -120,7 +120,7 @@ client.on('messageCreate', async message => {
       if (listurl === undefined){
         const embed = {
           "title": "現在受け付けているカウント集計一覧",
-          "description": `現在受け付けているカウント集計はありません。\n```\n/cnt 回数 @ロール\n```で集計してください。`,
+          "description": `現在受け付けているカウント集計はありません。`,
           "color": 16491101
         };
         message.reply({ embeds: [embed] })
