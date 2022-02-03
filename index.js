@@ -117,6 +117,13 @@ client.on('messageCreate', async message => {
   }
   if (command === 'list') {
       const listurl = messageIdList.values();
+      if (listurl === undefined){
+        comst embed = {
+          "title": "現在受け付けているカウント集計一覧",
+          "description": `現在受け付けているカウント集計はありません。\n```\n/cnt 回数 @ロール\n```で集計してください。`,
+          "color": 16491101
+        };
+      };
       const embed = {
         "title": "現在受け付けているカウント集計一覧",
         "description": `[link](${listurl.next().value})`,
