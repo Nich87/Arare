@@ -119,7 +119,7 @@ client.on('messageCreate', async message => {
       const listurl = messageIdList.values();
       const embed = {
         "title": "現在受け付けているカウント集計一覧",
-        "description": `${listurl.next().value}`,
+        "description": `[link](${listurl.next().value})`,
         "color": 16491101
 };
     message.reply({ embeds: [embed] })
@@ -149,7 +149,7 @@ client.on('messageCreate', async message => {
         color: 16727276,
         footer: {
           icon_url: `${msg.guild.iconURL()}`,
-          text: `${msg.createdAt.toFormat("M月D日 H時MI分")}`
+          text: `${msg.createdAt.toFormat("M月D日 H-3時MI分")}`
         },
         author: {
           name: `${msg.author.username}`,
