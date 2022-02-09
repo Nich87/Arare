@@ -117,10 +117,10 @@ client.on('messageCreate', async message => {
   }
   if (command === 'list') {
       const listurl = messageIdList.values();
-      if (listurl === undefined){
+      if (listurl.length === 0){
         message.reply("現在受け付けているカウント集計はありません。")
         return;
-      };
+      } else {
       const embed = {
         "title": "現在受け付けているカウント集計一覧",
         "description": `[link](${listurl.next().value})`,
@@ -129,12 +129,13 @@ client.on('messageCreate', async message => {
     message.reply({ embeds: [embed] })
   return;
 }
+}
 });
 
 //メッセージ取得
 client.on('messageCreate', async message => {
   const re = new RegExp('https://discord.com/channels/([0-9]{18})/([0-9]{18})/([0-9]{18})')
-  const results = message.content.match(re)
+  const results = message.content.includes(re)
   if (!results) {
     return
   };
@@ -153,7 +154,7 @@ client.on('messageCreate', async message => {
         color: 16727276,
         footer: {
           icon_url: `${msg.guild.iconURL()}`,
-          text: `${msg.createdAt.toFormat("M月D日 H-3時MI分")}`
+          text: `${msg.createdAt.toFormat("M月D日 HH時MI分")}`
         },
         author: {
           name: `${msg.author.username}`,
