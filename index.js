@@ -135,7 +135,7 @@ client.on('messageCreate', async message => {
 //メッセージ取得
 client.on('messageCreate', async message => {
   const re = new RegExp('https://discord.com/channels/([0-9]{18})/([0-9]{18})/([0-9]{18})')
-  const results = message.content.includes(re)
+  const results = (re)
   if (!results) {
     return
   };
