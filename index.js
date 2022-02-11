@@ -5,8 +5,6 @@ const options = {
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS"],
 };
 const client = new Client(options);
-const mongoose = require("mongoose");
-const { mongoPath } = require("./config.json");
 
 client.on('ready', async () => {
   client.user.setActivity('LOVEaim', { type: 'PLAYING' });
