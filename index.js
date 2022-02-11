@@ -117,10 +117,6 @@ client.on('messageCreate', async message => {
   }
   if (command === 'list') {
       const listurl = messageIdList.values();
-      if (listurl.length === 0){
-        message.reply("現在受け付けているカウント集計はありません。")
-        return;
-      } else {
       const embed = {
         "title": "現在受け付けているカウント集計一覧",
         "description": `[link](${listurl.next().value})`,
@@ -128,8 +124,6 @@ client.on('messageCreate', async message => {
 };
     message.reply({ embeds: [embed] })
   return;
-}
-}
 });
 
 //メッセージ取得
