@@ -115,6 +115,7 @@ client.on('messageCreate', async message => {
 };
     message.reply({ embeds: [embed] })
   return;
+}
 });
 
 //メッセージ取得
