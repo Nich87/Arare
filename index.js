@@ -146,7 +146,7 @@ client.on('messageCreate', async message => {
         },
         description: `${msg.content}`
       }]
-    }) : message.reply(`埋め込みのタイトルは${message.embeds[0].title}です`))
+    }) : message.reply(`埋め込みのタイトルは${msg.embeds[0].title}です`))
     .catch(console.error);
 });
 
