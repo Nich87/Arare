@@ -133,7 +133,7 @@ client.on('messageCreate', async message => {
   }
 
   channelch.messages.fetch(message_id)
-    .then(msg => msg.embeds[0] ? message.reply(`埋め込みのタイトルは${message.embeds[0].title}です`) : message.reply({
+    .then(msg => msg.embeds[0] === undefined ? message.reply({
       embeds: [{
         color: 16727276,
         footer: {
@@ -146,7 +146,7 @@ client.on('messageCreate', async message => {
         },
         description: `${msg.content}`
       }]
-    }))
+    }) : message.reply(`埋め込みのタイトルは${message.embeds[0].title}です`))
     .catch(console.error);
 });
 
