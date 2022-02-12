@@ -131,11 +131,11 @@ client.on('messageCreate', async message => {
   if (!channelch) {
     return;
   }
-
+  if(message.embeds[0]){
+  message.reply(`埋め込みのタイトルは${message.embeds[0].title}です`);
+} else { 
   channelch.messages.fetch(message_id)
-    .then(msg => if(message.embeds[0]){
- 		message.reply(`埋め込みのタイトルは${message.embeds[0].title}です`);
- 	} else { message.reply({
+    .then(msg => message.reply({
       embeds: [{
         color: 16727276,
         footer: {
@@ -148,8 +148,9 @@ client.on('messageCreate', async message => {
         },
         description: `${msg.content}`
       }]
-    })})
+    }))
     .catch(console.error);
+  }
 });
 
 //kickコマンド
