@@ -138,7 +138,7 @@ client.on('messageCreate', async message => {
         color: 16727276,
         footer: {
           icon_url: `${msg.guild.iconURL()}`,
-          text: `${msg.guild.channels.cache.find(channel) => channel.name}・${msg.createdAt.toFormat("YYYY/MM/DD")}`
+          text: `${msg.createdAt.toFormat("YYYY/MM/DD")}`
         },
         author: {
           name: `${msg.author.username}`,
