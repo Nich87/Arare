@@ -84,7 +84,7 @@ client.on('messageCreate', async message => {
               messageDateList.delete(message.createdAt.toFormat("YYYY/MM/DD - HH24-MI-SS"));
               //時間取得
               const dt = new Date();
-              let date = dt.toFormat("M月D日 HH24時MI分");
+              let date = dt.toFormat("M月D日 HH24時MI分SS秒");
               //埋め込み
               const Embed = {
                 color: 16723932,
@@ -151,7 +151,11 @@ client.on('messageCreate', async message => {
           name: `${msg.author.username}`,
           icon_url: `${msg.author.displayAvatarURL({ format: 'png' })}`
         },
+<<<<<<< HEAD
         description: `${msg.embeds[0] == undefined ? msg.content : msg.embeds[0].description }`
+=======
+        description: msg.embeds[0] === undefined ? `${msg.content}` : `${msg.embeds[0].description}`
+>>>>>>> 1cfa6c26c0ddc95839f48d0423ba06c2823c0894
       }]
     }))
     .catch(console.error);
