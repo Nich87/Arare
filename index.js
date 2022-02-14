@@ -13,7 +13,6 @@ client.on('ready', async () => {
 
 //時間
 require('date-utils');
-let now = new Date();
 
 //ping
 client.on('messageCreate', message => {
@@ -35,8 +34,10 @@ client.on('messageCreate', message => {
   }
 });
 
-//集計中メッセージのIDを登録
-let messageIdList = new Set();
+//集計中メッセージのリンクを登録
+let messageUrlList = new Set();
+let messageAuthorList = new Set();
+let messageDateList = new Set();
 
 //カウント集計
 client.on('messageCreate', async message => {
@@ -60,7 +61,7 @@ client.on('messageCreate', async message => {
 
         //メッセージを送る
         const role = message.mentions.roles.first();
-        const newMessage = await message.reply(`__リアクション集計中__\n> 目標回数：${a} \n> 対象ロール：${role.name}\n> このメッセージにリアクションしてください。`)
+        const newMessage = await message.reply(`__リアクション集計中__\n> 目標回数：${a} \n> 対象ロール：${role.name}\n> このBOTのメッセージにリアクションしてください。`)
 
         //ロールチェック
         const filter = async (reaction, user) => {
@@ -71,15 +72,19 @@ client.on('messageCreate', async message => {
         //集計完了
         collector.on("end", collected => collectEnd(collected, collector));
         //集計中のメッセージをリストに登録しておく
-        messageIdList.add(newMessage.url);
+        messageUrlList.add(newMessage.url);
+        messageAuthorList.add(message.author.id);
+        messageDateList.add(message.createdAt.toFormat("YYYY/MM/DD - HH24/MI"));
         //集計完了後の動作定義
         function collectEnd(collected, collector) {
               console.log("reactionCollector End");
               //集計中のメッセージリストから除去
-              messageIdList.delete(collector.message.url);
-              //collectedにはMessageReactionのCollectionが入っている。
-              console.log(collected.keys());
-              console.log(messageIdList);
+              messageUrlList.delete(collector.message.url);
+              messageAuthorList.delete(message.author.id);
+              messageDateList.delete(message.createdAt.toFormat("YYYY/MM/DD - HH24-MI-SS"));
+              //時間取得
+              const dt = new Date();
+              let date = dt.toFormat("M月D日 HH24時MI分");
               //埋め込み
               const Embed = {
                 color: 16723932,
@@ -87,11 +92,11 @@ client.on('messageCreate', async message => {
                 fields: [
                   {
                     name: '集計したリンク',
-                    value: `${message.url}`,
+                    value: `[link](${message.url})`,
                   },
                   {
                     name: '終了時刻',
-                    value: new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000)).toFormat("M月D日 H時MI分"),
+                    value: `${date}`,
                   },
                 ],
                 footer: {
@@ -105,10 +110,12 @@ client.on('messageCreate', async message => {
     }
   }
   if (command === 'list') {
-      const listurl = messageIdList.values();
+      const listurl = messageUrlList.values();
+      const listauthor = messageAuthorList.values();
+      const listdate = messageDateList.values();
       const embed = {
-        "title": "現在受け付けているカウント集計一覧",
-        "description": `[link](${listurl.next().value})`,
+        "title": "現在受け付けているカウント集計",
+        "description": `[link](${listurl.next().value})\nUser:<@!${listauthor.next().value}>\nDate:${listdate.next().value}`,
         "color": 16491101
 };
     message.reply({ embeds: [embed] })
@@ -133,46 +140,46 @@ client.on('messageCreate', async message => {
   }
 
   channelch.messages.fetch(message_id)
-    .then(msg => msg.embeds[0] === undefined ? message.reply({
+    .then(msg => message.reply({
       embeds: [{
         color: 16727276,
         footer: {
-          icon_url: `${msg.guild.iconURL()}`,
-          text: `${msg.createdAt.toFormat("YYYY/MM/DD")}`
+          icon_url: `${msg.guild.iconURL() === null ? `https://cdn.discordapp.com/attachments/866870931141296138/942606993313660978/SCC.png` : msg.guild.iconURL()}`,
+          text: `${msg.channnels.name}|${msg.createdAt.toFormat("YYYY-MM/DD")}`
         },
         author: {
           name: `${msg.author.username}`,
           icon_url: `${msg.author.displayAvatarURL({ format: 'png' })}`
         },
-        description: `${msg.content}`
+        description: `${msg.embeds[0] == undefined ? msg.content : msg.embeds[0].description }`
       }]
-    }) : message.reply(`埋め込みのタイトルは${msg.embeds[0].title}です`))
+    }))
     .catch(console.error);
 });
 
 //kickコマンド
 client.on('messageCreate', async message => {
-  if (message.content.startsWith('/love-kick') && message.guild) {
+  if (message.content.startsWith('/lkick') && message.guild) {
     if (message.mentions.members.size !== 1)
       return message.channel.send('Kickするメンバーを1人指定してください')
     const member = message.mentions.members.first()
     if (!member.bannable) return message.channel.send('このユーザーをKickすることができません')
     if (!message.member.permissions.has("KICK_MEMBERS")) return message.channel.send('あなたにはユーザーをKickする権限がありません');
     await member.kick()
-    await message.channel.send(`<@!${member.user.id}>をKickしました`)
+    await message.channel.send(`${member.displayname}をKickしました`)
   }
 });
 
 //banコマンド
 client.on('messageCreate', async message => {
-  if (message.content.startsWith('/love-ban') && message.guild) {
+  if (message.content.startsWith('/lban') && message.guild) {
     if (message.mentions.members.size !== 1)
       return message.channel.send('Banするメンバーを1人指定してください')
     const member = message.mentions.members.first('')
     if (!member.bannable) return message.channel.send('このユーザーをBanすることができません')
     if (!message.member.permissions.has("BAN_MEMBERS")) return message.channel.send('あなたにはユーザーをBANする権限がありません');
     await member.ban()
-    await message.channel.send(`<@!${member.user.id}>をBanしました`)
+    await message.channel.send(`${member.displayname}をBanしました`)
   }
 });
 
@@ -210,11 +217,11 @@ client.on('messageCreate', message => {
       "value": "URL先のメッセージの内容を取得します。"
     },
     {
-      "name": "/love-ban @ユーザー",
+      "name": "/lban @ユーザー",
       "value": "指定したメンバーをBANします。\n権限が必要です。"
     },
     {
-      "name": "/love-kick @ユーザー",
+      "name": "/lkick @ユーザー",
       "value": "指定したメンバーをKICKします。\n権限が必要です。"
     }
   ]
