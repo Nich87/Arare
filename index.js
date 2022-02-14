@@ -73,13 +73,15 @@ client.on('messageCreate', async message => {
         collector.on("end", collected => collectEnd(collected, collector));
         //集計中のメッセージをリストに登録しておく
         messageUrlList.add(newMessage.url);
-        messageAuthorList.add(message.author.name);
+        messageAuthorList.add(message.author.id);
         messageDateList.add(message.createdAt.toFormat("YYYY/MM/DD - HH24/MI"));
         //集計完了後の動作定義
         function collectEnd(collected, collector) {
               console.log("reactionCollector End");
               //集計中のメッセージリストから除去
-              messageIdList.delete(collector.message.url);
+              messageUrlList.delete(collector.message.url);
+              messageAuthorList.delete(message.author.id);
+              messageDateList.delete(message.createdAt.toFormat("YYYY/MM/DD - HH24/MI"));
               //時間取得
               const dt = new Date();
               let date = dt.toFormat("M月D日 HH24時MI分");
@@ -108,10 +110,12 @@ client.on('messageCreate', async message => {
     }
   }
   if (command === 'list') {
-      const listurl = messageIdList.values();
+      const listurl = messageUrlList.values();
+      const listauthor = messageAuthorList.values();
+      const listdate = messageDateList.values();
       const embed = {
-        "title": "現在受け付けているカウント集計一覧",
-        "description": `[link](${listurl.next().value})`,
+        "title": "現在受け付けているカウント集計",
+        "description": `[link](${listurl.next().value})\nUser:<@!${listauthor.next().value}>\nDate:${listdate.next().value}`,
         "color": 16491101
 };
     message.reply({ embeds: [embed] })
@@ -149,7 +153,7 @@ client.on('messageCreate', async message => {
         },
         description: msg.embeds[0] === undefined ? `${msg.content}` : `${msg.embeds[0].description}`
       }]
-    })
+    }))
     .catch(console.error);
 });
 
