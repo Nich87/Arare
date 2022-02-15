@@ -83,7 +83,7 @@ client.on('messageCreate', async message => {
               messageAuthorList.delete(message.author.id);
               messageDateList.delete(message.createdAt.toFormat("YYYY/MM/DD - HH24-MI-SS"));
               //時間取得
-              const date = new Date().toLocaleString({ timeZone: 'Asia/Tokyo' }).toFormat("YYYY/MM/DD HH24時MI分")
+              const date = new Date().toFormat("YYYY/MM/DD HH24時MI分")
               //埋め込み
               const Embed = {
                 title: 'リアクション集計完了',
@@ -267,7 +267,7 @@ client.on("threadUpdate", async (oldThread, newThread) => {
 });
 
 //新規カウント集計システム
-client.on('messagecreate', async message => {
+client.on('messageCreate', async message => {
   if (!message.content.startsWith(prefix)) return
   const [command, ...args] = message.content.slice(prefix.length).split(' ')
   if (command === 'ncnt') {
