@@ -84,7 +84,6 @@ client.on('messageCreate', async message => {
               messageDateList.delete(message.createdAt.toFormat("YYYY/MM/DD - HH24-MI-SS"));
               //時間取得
               const dt = new Date
-              dt = 9*60*60*1000+Date.now()
               const date = dt.toFormat("YYYY/MM/DD HH24時MI分")
               //埋め込み
               const Embed = {
