@@ -87,7 +87,6 @@ client.on('messageCreate', async message => {
               const date = dt.toFormat("YYYY/MM/DD HH24時MI分")
               //埋め込み
               const Embed = {
-                color: 16723932,
                 title: 'リアクション集計完了',
                 fields: [
                   {
@@ -104,7 +103,7 @@ client.on('messageCreate', async message => {
                   icon_url: '',
                 },
               };
-              message.reply(('リアクションの集計が完了しました。') && message.reply({ embeds: [Embed] }) && newMessage.delete());
+              message.reply({ content: ['リアクションの集計が完了しました。'], embeds: [Embed] }) && newMessage.delete());
         }
       }
     }
