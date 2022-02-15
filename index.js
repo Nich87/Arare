@@ -151,11 +151,7 @@ client.on('messageCreate', async message => {
           name: `${msg.author.username}`,
           icon_url: `${msg.author.displayAvatarURL({ format: 'png' })}`
         },
-<<<<<<< HEAD
         description: `${msg.embeds[0] == undefined ? msg.content : msg.embeds[0].description }`
-=======
-        description: msg.embeds[0] === undefined ? `${msg.content}` : `${msg.embeds[0].description}`
->>>>>>> 1cfa6c26c0ddc95839f48d0423ba06c2823c0894
       }]
     }))
     .catch(console.error);
