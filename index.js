@@ -95,7 +95,7 @@ client.on('messageCreate', async message => {
                   },
                   {
                     name: '終了時刻',
-                    value: `${date}`,
+                    value: `${timestamp}`,
                   },
                 ],
                 footer: {
