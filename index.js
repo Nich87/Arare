@@ -83,8 +83,8 @@ client.on('messageCreate', async message => {
               messageAuthorList.delete(message.author.id);
               messageDateList.delete(message.createdAt.toFormat("YYYY/MM/DD - HH24-MI-SS"));
               //時間取得
-              const dt = new Date().toLocaleString({ timeZone: 'Asia/Tokyo' })
-              let date = dt.toFormat("M月D日 HH24時MI分SS秒");
+              new Date().toLocaleString({ timeZone: 'Asia/Tokyo' })
+              let date = Date.toFormat("M月D日 HH24時MI分SS秒");
               //埋め込み
               const Embed = {
                 color: 16723932,
