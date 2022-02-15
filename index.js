@@ -271,7 +271,7 @@ client.on("threadUpdate", async (oldThread, newThread) => {
 client.on('messagecreate', async message => {
   if (!message.content.startsWith(prefix)) return
   const [command, ...args] = message.content.slice(prefix.length).split(' ')
-  if (command === 'new-cnt') {
+  if (command === 'ncnt') {
   const [count, ...role] = args
 
   if(!count) return message.channel.send("構文エラー:無効なコマンドが送信されました。\n原因として以下の可能性があります。\nカウント数やロールが指定されていなかった\nカウント数とロールの順番が逆である。")
