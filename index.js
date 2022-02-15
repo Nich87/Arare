@@ -144,7 +144,7 @@ client.on('messageCreate', async message => {
         color: 16727276,
         footer: {
           icon_url: `${msg.guild.iconURL() === null ? `https://cdn.discordapp.com/attachments/866870931141296138/942606993313660978/SCC.png` : msg.guild.iconURL()}`,
-          text: `${msg.createdAt.toFormat("YYYY-MM/DD")}`
+          text: `${msg.guild.channels.cache.find((channel) => channel.name)}|${msg.createdAt.toFormat("YYYY-MM/DD")}`
         },
         author: {
           name: `${msg.author.username}`,
