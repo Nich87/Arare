@@ -95,7 +95,7 @@ client.on('messageCreate', async message => {
                   },
                   {
                     name: '終了時刻',
-                    value: `${timestamp}`,
+                    value: `${date}`,
                   },
                 ],
                 footer: {
@@ -114,8 +114,7 @@ client.on('messageCreate', async message => {
       const listdate = messageDateList.values();
       const embed = {
         "title": "現在受け付けているカウント集計",
-        "description": `[link](${listurl.next().value})\nUser:<@!${listauthor.next().value}>\nDate:${listdate.next().value}`,
-        "color": 16491101
+        "description": `[link](${listurl.next().value})\nUser:<@!${listauthor.next().value}>\nDate:${listdate.next().value}`
 };
     message.reply({ embeds: [embed] })
   return;
@@ -141,7 +140,6 @@ client.on('messageCreate', async message => {
   channelch.messages.fetch(message_id)
     .then(msg => message.reply({
       embeds: [{
-        color: 16727276,
         footer: {
           icon_url: `${msg.guild.iconURL() === null ? `https://cdn.discordapp.com/attachments/866870931141296138/942606993313660978/SCC.png` : msg.guild.iconURL()}`,
           text: `${msg.guild.channels.cache.find((channel) => channel.name)}|${msg.createdAt.toFormat("YYYY-MM/DD")}`
@@ -165,7 +163,7 @@ client.on('messageCreate', async message => {
     if (!member.bannable) return message.channel.send('このユーザーをKickすることができません')
     if (!message.member.permissions.has("KICK_MEMBERS")) return message.channel.send('あなたにはユーザーをKickする権限がありません');
     await member.kick()
-    await message.channel.send(`${member.displayname}をKickしました`)
+    await message.channel.send(`${member.user.tag}をKickしました`)
   }
 });
 
@@ -178,7 +176,7 @@ client.on('messageCreate', async message => {
     if (!member.bannable) return message.channel.send('このユーザーをBanすることができません')
     if (!message.member.permissions.has("BAN_MEMBERS")) return message.channel.send('あなたにはユーザーをBANする権限がありません');
     await member.ban()
-    await message.channel.send(`${member.displayname}をBanしました`)
+    await message.channel.send(`${member.user.tag}をBanしました`)
   }
 });
 
@@ -268,5 +266,20 @@ client.on("threadUpdate", async (oldThread, newThread) => {
     newThread.parent.send(`スレッド${newThread.name}${newThread.archived ? "はアーカイブされました。" : "のアーカイブが解除されました。"}`)
   };
 });
+
+//新規カウント集計システム
+client.on('messagecreate', async message => {
+  if (!message.content.startsWith(prefix)) return
+  const [command, ...args] = message.content.slice(prefix.length).split(' ')
+  if (command === 'new-cnt') {
+  const [count, ...role] = args
+
+  if(!count) return message.channel.send("構文エラー:無効なコマンドが送信されました。\n原因として以下の可能性があります。\nカウント数やロールが指定されていなかった\nカウント数とロールの順番が逆である。")
+  if(!roles) return message.channel.send("構文エラー:無効なコマンドが送信されました。\n原因として以下の可能性があります。\nカウント数やロールが指定されていなかった\nカウント数とロールの順番が逆である。")
+
+  const roles = message.guild.roles.cache.find(rolename => rolename.name === role)
+  const newMessage = await message.reply(`__リアクション集計中__\n> 目標回数：${count} \n> 対象ロール：${roles.name}\n> このBOTのメッセージにリアクションしてください。`)
+}
+})
 
 client.login(process.env.token);
