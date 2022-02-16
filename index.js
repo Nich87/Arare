@@ -5,6 +5,7 @@ const options = {
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MEMBERS"],
 };
 const client = new Client(options);
+const fetch = require("node-fetch");
 
 client.on('ready', async () => {
   client.user.setActivity(`${client.guilds.cache.map(guild => guild.memberCount).reduce((p, c) => p + c)}人`, { type: 'WATCHING' });
