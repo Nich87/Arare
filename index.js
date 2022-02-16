@@ -10,7 +10,7 @@ const fetch = require("node-fetch");
 client.on('ready', async () => {
   client.user.setActivity(`${client.guilds.cache.map(guild => guild.memberCount).reduce((p, c) => p + c)}人`, { type: 'WATCHING' });
   console.log(`${client.user.tag}にログインしました。`);
-  const server_id = client.guild.id();
+  const server_id = guild.id();
   const data = [{
     name: "ping",
     description: "BOTの現在のPing値を取得します。"
