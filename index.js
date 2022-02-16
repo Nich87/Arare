@@ -299,12 +299,13 @@ client.on('messageCreate', async message => {
               messageDateList.delete(message.createdAt.toFormat("YYYY/MM/DD - HH24-MI-SS"));
               //時間取得
               const date = new Date().toFormat("YYYY/MM/DD HH24時MI分")
-              //埋め込み(rich embed ver)
-              const Embed = new Discord.RichEmbed()
-                .setTitle('リアクション集計完了')
-                .setDescription(`集計したリンク: [link](${message.url})\n終了時刻: ${date}\n対象ロール: ${role.name}`)
+              //埋め込み(rich embed だとうまく行かないので普通に)
+              const Embed = {
+                "title": 'リアクション集計完了'
+                "description": `集計したリンク: [link](${message.url})\n 終了時刻: ${date}\n対象ロール: ${role.name}`
               message.reply({ content: "リアクションの集計が完了しました。", embeds: [Embed] }) && newMessage.delete();
         }
+       }
       }
   if (command === 'list') {
       const listurl = messageUrlList.values();
