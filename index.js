@@ -218,9 +218,9 @@ client.on('messageCreate', async message => {
 //スレッド周り===========================================
 //スレッド作成
 client.on("threadCreate", async thread => {
-  if(thread.guildId === 888981896594350132){
+  if(thread.guildId === '888981896594350132'){
     await thread.send(`スレッドが作成されました。\n <@&927377284653002772> <@&889029317139517461> <@!594370135230251028>`)
-  } else if(thread.guildId === 917221958242947072){
+  } else if(thread.guildId === '917221958242947072'){
     await thread.send(`スレッドが作成されました。\n <@&917221958280687624> <@&940148040445067264> <@&917221958297477191>`)
   };
 });
