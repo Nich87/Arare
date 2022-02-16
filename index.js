@@ -66,7 +66,7 @@ client.on('messageCreate', async message => {
                 messageAuthorList.delete(message.author.id);
                 messageDateList.delete(message.createdAt.toFormat("YYYY/MM/DD - HH24/MI"));
                 //埋め込み
-                const date = new Date.toFormat('YYYY/MM/DD HH24:MI-SS')
+                const date = new Date().toFormat('YYYY/MM/DD HH24:MI-SS')
                 const Embed = {
                   title: 'リアクション集計完了',
                   fields: [
