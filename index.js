@@ -9,7 +9,7 @@ const fetch = require("node-fetch");
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 client.on('ready', async () => {
-  client.user.setActivity(`${client.guilds.cache.map(guild => guild.memberCount).reduce((p, c) => p + c)}人`, { type: 'WATCHING' });
+  client.user.setActivity(`#/help | ${client.guilds.cache.map(guild => guild.memberCount).reduce((p, c) => p + c)}人`, { type: 'PLAYING' });
   console.log(`${client.user.tag}にログインしました。`);
 });
 
@@ -239,19 +239,5 @@ client.on("threadUpdate", async (oldThread, newThread) => {
   };
 });
 //=====================================================
-
-//ロール付与
-client.on('messageCreate', async message => {
-  if (!message.content.startsWith(prefix)) return
-  const command = message.content.slice(prefix.length).split(' ')
-  if (command === 'add-role') {
-    const role = message.mentions.roles.first();
-    const guild = message.guild.cache.id();
-    message.guild.members.fetch()
-    .then(members => Promise.all(members.map(member => member.roles.add(`${role.id}`))))
-    .catch(console.error)
-    message.reply(`${guild.memberCount}人に${role.name}を付与しました。`)
-  };
-});
 
 client.login(process.env.token);
