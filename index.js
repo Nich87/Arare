@@ -281,7 +281,7 @@ client.on('messageCreate', async message => {
 
         //ロールチェック
         const filter = async (reaction, user) => {
-          return (await message.guild ?.members.fetch(user.id).then((member) => member.roles.cache.has(mentionRoles.some))) ?? false;
+          return (await message.guild ?.members.fetch(user.id).then((member) => member.roles.cache.has(mentionRoles))) ?? false;
         };
 
         const collector = newMessage.createReactionCollector({ filter, max: `${a}`});
