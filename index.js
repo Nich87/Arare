@@ -283,7 +283,7 @@ client.on('messageCreate', async message => {
         const filter = async (reaction, user) => {
           return (await message.guild ?.members.fetch(user.id).then((member) => member.roles.cache.has())) ?? false;
         };
-        const filterd = filter.some(mentionRoles);
+        const filterd = mentionRoles.some(filter);
 
         const collector = newMessage.createReactionCollector({ filterd, max: `${a}`});
         //集計完了
