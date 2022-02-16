@@ -275,8 +275,8 @@ client.on('messageCreate', async message => {
   if (!a || message.mentions.roles.size == 0) return message.channel.send("構文エラー:無効なコマンドが送信されました。\n原因として以下の可能性があります。\n> ・カウント数やロールが指定されていなかった\n> ・カウント数とロールの順番が逆である。")
     
         //メッセージを送る
-        const mentionRoles = await message.mentions.roles.map(r => r.role.id)
-        const namedRoles = await message.mentions.roles.map(r => r.role.name)
+        const mentionRoles = await message.mentions.roles.map(r => r.id)
+        const namedRoles = await message.mentions.roles.map(r => r.name)
         const newMessage = await message.reply(`__リアクション集計中__\n> 目標回数：${a} \n> 対象ロール：${namedRoles}\n> このメッセージにリアクションしてください。`)
 
         //ロールチェック
