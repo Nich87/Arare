@@ -314,8 +314,8 @@ client.on('messageCreate', async message => {
       const listdate = messageDateList.values();
     if(listurl == null) return message.channel.send("現在受け付けている集計はありません。");
       const embed = new Discord.RichEmbed()
-        title("現在受け付けているカウント集計")
-        "description": `[link](${listurl.next().value})\nUser:<@!${listauthor.next().value}>\nDate:${listdate.next().value}`
+        .setTitle("現在受け付けているカウント集計")
+        .setDescription(`[link](${listurl.next().value})\nUser:<@!${listauthor.next().value}>\nDate:${listdate.next().value}`)
     message.reply({ embeds: [embed] })
   return;
 }
