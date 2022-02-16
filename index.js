@@ -6,29 +6,25 @@ const options = {
 };
 const client = new Client(options);
 const fetch = require("node-fetch");
+const { SlashCommandBuilder } = require('@discordjs/builders');
 
 client.on('ready', async () => {
   client.user.setActivity(`${client.guilds.cache.map(guild => guild.memberCount).reduce((p, c) => p + c)}人`, { type: 'WATCHING' });
   console.log(`${client.user.tag}にログインしました。`);
-  const data = [{
-    name: "ping",
-    description: "BOTの現在のPing値を取得します。"
-  }, {
-    name: "cnt",
-    description: "リアクションのカウントを集計します。",
-    options: [{
-      type: "NUMBER",
-      name: "回数",
-      description: "集計する回数を指定してください。",
-    }],
-    options: [{
-      required: true,
-      type: "ROLE",
-      name: "ロール",
-      description: "指定したロールが付与されてる人に限定します。",
-      required: true
-    }],
-  }];
+  const data = new SlashCommandBuilder()
+  .setName('ping')
+  .setDescription('BOTの現在のPING値を取得します。')
+  .setName('cnt')
+  .setDescription('リアクションの集計を行います。')
+  .addNumberOption(option =>
+    option.setName('回数')
+          .setDescription('集計する回数を指定してください。')
+          .setRequired(true));
+  .addRoleOption(option =>
+    option.setName('ロール')
+          .setDescription('集計対象を指定してください。')
+          .setRequired(true));
+
   client.guilds.cache.forEach(async (guild) => {
   await client.application.commands.set(data, `${guild.id}`);
   });
