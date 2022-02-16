@@ -29,7 +29,7 @@ client.on('ready', async () => {
       required: true
     }],
   }];
-  client.guilds.cache.forEach((guild) => {
+  client.guilds.cache.forEach(async (guild) => {
   await client.application.commands.set(data, `${guild.id}`);
   });
 });
