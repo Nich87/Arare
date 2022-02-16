@@ -153,6 +153,7 @@ client.on('messageCreate', async message => {
   const guild_id = results[1]
   const channel_id = results[2]
   const message_id = results[3]
+  const channelname = (channel => channel.guild.channels.cache.find(channel2 => channel3.id === `${channel_id}`));
 
   const channelch = client.channels.cache.get(channel_id);
   if (!channelch) {
@@ -164,7 +165,7 @@ client.on('messageCreate', async message => {
       embeds: [{
         footer: {
           icon_url: `${msg.guild.iconURL() === null ? `https://cdn.discordapp.com/attachments/866870931141296138/942606993313660978/SCC.png` : msg.guild.iconURL()}`,
-          text: `${msg.guild.channels.cache.find(channel => channel.id === `${channel_id}`)}|${msg.createdAt.toFormat("YYYY-MM/DD")}`
+          text:`${channelname}|${msg.createdAt.toFormat("YYYY-MM/DD")}`
         },
         author: {
           name: `${msg.author.username}`,
