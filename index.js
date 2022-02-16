@@ -20,7 +20,7 @@ client.on('ready', async () => {
       type: "NUMBER",
       name: "回数",
       description: "集計する回数を指定してください。",
-    ]},
+    }],
     options: [{
       required: true,
       type: "ROLE",
