@@ -7,7 +7,7 @@ const options = {
 const client = new Client(options);
 
 client.on('ready', async () => {
-  client.user.setActivity('LOVEaim', { type: 'PLAYING' });
+  client.user.setActivity(`${client.guilds.cache.map(guild => guild.memberCount).reduce((p, c) => p + c)}人`, { type: 'WATCHING' });
   console.log(`${client.user.tag}にログインしました。`);
 });
 
@@ -271,16 +271,16 @@ client.on('messageCreate', async message => {
   if (command === 'ncnt') {
   const [a,b] = args.map(str => Number(str))
 
-  if(!a) return message.channel.send("構文エラー:無効なコマンドが送信されました。\n原因として以下の可能性があります。\n> ・カウント数やロールが指定されていなかった\n> ・カウント数とロールの順番が逆である。")
-  if (message.mentions.roles.size == 0) return message.channel.send("構文エラー:無効なコマンドが送信されました。\n原因として以下の可能性があります。\n> ・カウント数やロールが指定されていなかった\n> ・カウント数とロールの順番が逆である。")
+  if (!a || message.mentions.roles.size == 0) return message.channel.send("構文エラー:無効なコマンドが送信されました。\n原因として以下の可能性があります。\n> ・カウント数やロールが指定されていなかった\n> ・カウント数とロールの順番が逆である。")
     
         //メッセージを送る
-        const role = message.mentions.roles.first();
-        const newMessage = await message.reply(`__リアクション集計中__\n> 目標回数：${a} \n> 対象ロール：${role.name}\n> BOTのメッセージにリアクションしてください。`)
+        const mentionRoles = await message.mentions.roles.map(r => r.role.id)
+        const namedRoles = await message.mentions.roles.map(r => r.role.name)
+        const newMessage = await message.reply(`__リアクション集計中__\n> 目標回数：${a} \n> 対象ロール：${namedRoles}\n> このメッセージにリアクションしてください。`)
 
         //ロールチェック
         const filter = async (reaction, user) => {
-          return (await message.guild ?.members.fetch(user.id).then((member) => member.roles.cache.has(role.id))) ?? false;
+          return (await message.guild ?.members.fetch(user.id).then((member) => member.roles.cache.has(mentionRoles.some))) ?? false;
         };
 
         const collector = newMessage.createReactionCollector({ filter, max: `${a}`});
@@ -311,13 +311,42 @@ client.on('messageCreate', async message => {
       const listurl = messageUrlList.values();
       const listauthor = messageAuthorList.values();
       const listdate = messageDateList.values();
-    if(listurl == null) return message.channel.send("現在受け付けている集計はありません。");
-      const embed = new Discord.RichEmbed()
-        .setTitle("現在受け付けているカウント集計")
-        .setDescription(`[link](${listurl.next().value})\nUser:<@!${listauthor.next().value}>\nDate:${listdate.next().value}`)
+    if(listauthor == undefined) return message.channel.send("現在受け付けている集計はありません。");
+      const embed = {
+        "title": "現在受け付けているカウント集計",
+        "description": `[link](${listurl.next().value})\nUser:<@!${listauthor.next().value}>\nDate:${listdate.next().value}`
+      }
     message.reply({ embeds: [embed] })
   return;
 }
 });
+
+//ロール付与
+client.on('messageCreate', async message => {
+  if (!message.content.startsWith(prefix)) return
+  const command = message.content.slice(prefix.length).split(' ')
+  if (command === 'add-role') {
+    const role = const role = message.mentions.roles.first();
+    const guild = message.guild.id();
+    message.guild.members.fetch();
+    .then(members => Promise.all(members.map(member => member.roles.add(`${role.id}`))))
+    .catch(console.error)
+    message.reply(`${guild.memberCount}人に${role.name}を付与しました。`)
+  };
+});
+
+//ファイル展開
+client.on("messageCreate", async message => {
+   if (message.content.startsWith("/file")) {
+     if (message.attachments.size) {
+       const fileURL = message.attachments.first().url;
+       const responce = await fetch(fileURL);
+       const body = await responce.text();
+       message.channel.send(body);
+     } else {
+       message.reply("ファイルが添付されていません。");
+     }
+   }
+ });
 
 client.login(process.env.token);
