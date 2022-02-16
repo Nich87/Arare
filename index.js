@@ -302,9 +302,7 @@ client.on('messageCreate', async message => {
               //埋め込み(rich embed ver)
               const Embed = new Discord.RichEmbed()
                 .setTitle('リアクション集計完了')
-                .addFields('集計したリンク', `[link](${message.url})`)
-                .addFields('終了時刻', `${date}`)
-                .setFooter('対象ロール：', `${role.name}`)
+                .setDescription(`集計したリンク: [link](${message.url})\n終了時刻: ${date}\n対象ロール: ${role.name}`)
               message.reply({ content: "リアクションの集計が完了しました。", embeds: [Embed] }) && newMessage.delete();
         }
       }
