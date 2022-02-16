@@ -1,4 +1,4 @@
-const prefix = '/';
+const prefix = '#/';
 const Discord = require("discord.js");
 const { Intents, Client, MessageEmbed, MessageActionRow, MessageSelectMenu } = require("discord.js");
 const options = {
@@ -11,23 +11,6 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 client.on('ready', async () => {
   client.user.setActivity(`${client.guilds.cache.map(guild => guild.memberCount).reduce((p, c) => p + c)}人`, { type: 'WATCHING' });
   console.log(`${client.user.tag}にログインしました。`);
-  const data = new SlashCommandBuilder()
-  .setName('ping')
-  .setDescription('BOTの現在のPING値を取得します。')
-  .setName('cnt')
-  .setDescription('リアクションの集計を行います。')
-  .addNumberOption(option =>
-    option.setName('回数')
-          .setDescription('集計する回数を指定してください。')
-          .setRequired(true))
-  .addRoleOption(option =>
-    option.setName('ロール')
-          .setDescription('集計対象を指定してください。')
-          .setRequired(true));
-
-  client.guilds.cache.forEach(async (guild) => {
-  await client.application.commands.set(data, `${guild.id}`);
-  });
 });
 
 //時間
@@ -38,11 +21,10 @@ let messageUrlList = new Set();
 let messageAuthorList = new Set();
 let messageDateList = new Set();
 
-client.on("interactionCreate", async (interaction) => {
-    if (!interaction.isCommand()) {
-        return;
-    }
-    if (interaction.commandName === 'ping') {
+client.on('messageCreate', async message => {
+  if (!message.content.startsWith(prefix)) return
+  const [command, ...args] = message.content.slice(prefix.length).split(' ')
+  if (command === 'ping') {
         const pingem = {
           "fields": [
             {
@@ -51,10 +33,48 @@ client.on("interactionCreate", async (interaction) => {
             }
           ]
         };
-        await interaction.reply({ embeds: [pingem] })
+        await message.reply({ embeds: [pingem] })
     }
-  if (interaction.commandName === 'cnt') {
-     return;
+  if (command === 'help') {
+    const helpem = {
+      "title": "ヘルプ一覧",
+      "description": "このBOTで使用できるコマンドの一覧です。",
+      "author": {
+        "name": `${message.author.username}`,
+        "icon_url": `${message.author.displayAvatarURL({ format: 'png' })}`
+      },
+      "fields": [
+        {
+          "name": "#/help",
+          "value": "このヘルプを表示します。"
+        },
+        {
+          "name": "#/ping",
+          "value": "ping値を取得します。"
+        },
+        {
+          "name": "#/cnt 回数 @ロール",
+          "value": "指定した回数のリアクションを集計します。\nただし、指定したロール以外がリアクションをしてもカウントされません。"
+        },
+        {
+          "name": "スレッド関連",
+          "value": "以下の条件で自動的に通知します。\n> スレッド作成\n> アーカイブと解除\n> スレッド削除"
+        },
+        {
+          "name": "メッセージURL取得",
+          "value": "URL先のメッセージの内容を取得します。"
+        },
+        {
+          "name": "#/ban @ユーザー",
+          "value": "指定したメンバーをBANします。\n権限が必要です。"
+        },
+        {
+          "name": "#/kick @ユーザー",
+          "value": "指定したメンバーをKICKします。\n権限が必要です。"
+        }
+      ]
+    };
+    message.reply({ embeds: [helpem] })
   }
 });
 
@@ -172,7 +192,7 @@ client.on('messageCreate', async message => {
 
 //kickコマンド
 client.on('messageCreate', async message => {
-  if (message.content.startsWith('/lkick') && message.guild) {
+  if (message.content.startsWith('#/kick') && message.guild) {
     if (message.mentions.members.size !== 1)
       return message.channel.send('Kickするメンバーを1人指定してください')
     const member = message.mentions.members.first()
@@ -185,7 +205,7 @@ client.on('messageCreate', async message => {
 
 //banコマンド
 client.on('messageCreate', async message => {
-  if (message.content.startsWith('/lban') && message.guild) {
+  if (message.content.startsWith('#/ban') && message.guild) {
     if (message.mentions.members.size !== 1)
       return message.channel.send('Banするメンバーを1人指定してください')
     const member = message.mentions.members.first('')
@@ -195,56 +215,6 @@ client.on('messageCreate', async message => {
     await message.channel.send(`${member.user.tag}をBanしました`)
   }
 });
-
-//help
-client.on('messageCreate', message => {
-  if (message.content.includes("help") && message.mentions.users.has(client.user.id)) {
-    if (message.author.bot) return;
-    const helpem = {
-  "title": "ヘルプ一覧",
-  "description": "このBOTで使用できるコマンドの一覧です。",
-  "color": 16723932,
-  "author": {
-    "name": `${message.author.username}`,
-    "icon_url": `${message.author.displayAvatarURL({ format: 'png' })}`
-  },
-  "fields": [
-    {
-      "name": "@LOVEaim - Manager#9735 help",
-      "value": "このヘルプを表示します。"
-    },
-    {
-      "name": "@LOVEaim - Manager#9735 ping",
-      "value": "ping値を取得します。"
-    },
-    {
-      "name": "/cnt 回数 @ロール",
-      "value": "指定した回数のリアクションを集計します。\nただし、指定したロール以外がリアクションをしてもカウントされません。"
-    },
-    {
-      "name": "スレッド関連",
-      "value": "以下の条件で自動的に運営とnoshAさんに通知します。\n> スレッド作成\n> アーカイブと解除\n> スレッド削除"
-    },
-    {
-      "name": "メッセージURL取得",
-      "value": "URL先のメッセージの内容を取得します。"
-    },
-    {
-      "name": "/lban @ユーザー",
-      "value": "指定したメンバーをBANします。\n権限が必要です。"
-    },
-    {
-      "name": "/lkick @ユーザー",
-      "value": "指定したメンバーをKICKします。\n権限が必要です。"
-    }
-  ]
-    };
-    message.reply({ embeds: [helpem] })
-  }
-  else {
-    return;
-  }
-})
 
 //ボタン
 client.on('messageCreate', async message => {
@@ -260,7 +230,7 @@ client.on('messageCreate', async message => {
     }
 });
 
-//スレッド周り
+//スレッド周り===========================================
 //スレッド作成
 client.on("threadCreate", async thread => {
   await thread.send(`スレッドが作成されました。\n <@&927377284653002772> <@&889029317139517461> <@!594370135230251028>`);
@@ -282,6 +252,7 @@ client.on("threadUpdate", async (oldThread, newThread) => {
     newThread.parent.send(`スレッド${newThread.name}${newThread.archived ? "はアーカイブされました。" : "のアーカイブが解除されました。"}`)
   };
 });
+//=====================================================
 
 //新規カウント集計システム
 client.on('messageCreate', async message => {
@@ -346,26 +317,12 @@ client.on('messageCreate', async message => {
   const command = message.content.slice(prefix.length).split(' ')
   if (command === 'add-role') {
     const role = message.mentions.roles.first();
-    const guild = message.guild.id();
+    const guild = message.guild.cache.id();
     message.guild.members.fetch()
     .then(members => Promise.all(members.map(member => member.roles.add(`${role.id}`))))
     .catch(console.error)
     message.reply(`${guild.memberCount}人に${role.name}を付与しました。`)
   };
 });
-
-//ファイル展開
-client.on("messageCreate", async message => {
-   if (message.content.startsWith("/file")) {
-     if (message.attachments.size) {
-       const fileURL = message.attachments.first().url;
-       const responce = await fetch(fileURL);
-       const body = await responce.text();
-       message.channel.send(body);
-     } else {
-       message.reply("ファイルが添付されていません。");
-     }
-   }
- });
 
 client.login(process.env.token);
