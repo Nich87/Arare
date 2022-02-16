@@ -35,7 +35,72 @@ client.on('messageCreate', async message => {
         };
         await message.reply({ embeds: [pingem] })
     }
-  if (command === 'help') {
+    if (command === 'cnt') {
+      const [a, b] = args.map(str => Number(str))
+
+
+      //リアクション数・ロール指定がない場合
+      if (!a || message.mentions.roles.size == 0) return message.channel.send("構文エラー:無効なコマンドが送信されました。\n原因として以下の可能性があります。\n> ・カウント数やロールが指定されていなかった\n> ・カウント数とロールの順番が逆である。");
+
+          //メッセージを送る
+          const role = message.mentions.roles.first();
+          const newMessage = await message.reply(`__リアクション集計中__\n> 目標回数：${a} \n> 対象ロール：${role.name}\n> このBOTのメッセージにリアクションしてください。`);
+
+          //ロールチェック
+          const filter = async (reaction, user) => {
+            return (await message.guild ?.members.fetch(user.id).then((member) => member.roles.cache.has(role.id))) ?? false;
+          };
+
+          const collector = newMessage.createReactionCollector({ filter, max: `${a}`});
+          //集計完了
+          collector.on("end", collected => collectEnd(collected, collector));
+          //集計中のメッセージをリストに登録しておく
+          messageUrlList.add(newMessage.url);
+          messageAuthorList.add(message.author.id);
+          messageDateList.add(message.createdAt.toFormat("YYYY/MM/DD - HH24/MI"));
+          //集計完了後の動作定義
+          function collectEnd(collected, collector) {
+                console.log("reactionCollector End");
+                //集計中のメッセージリストから除去
+                messageUrlList.delete(collector.message.url);
+                messageAuthorList.delete(message.author.id);
+                messageDateList.delete(message.createdAt.toFormat("YYYY/MM/DD - HH24/MI"));
+                //時間取得
+                const date = new Date().toFormat("YYYY/MM/DD HH24時MI分")
+                //埋め込み
+                const Embed = {
+                  title: 'リアクション集計完了',
+                  fields: [
+                    {
+                      name: '集計したリンク',
+                      value: `[link](${message.url})`,
+                    },
+                    {
+                      name: '終了時刻',
+                      value: `${date}`,
+                    },
+                  ],
+                  footer: {
+                    text: `対象ロール：${role.name}`,
+                    icon_url: '',
+                  },
+                };
+                message.reply({ content: "リアクションの集計が完了しました。", embeds: [Embed] }) && newMessage.delete();
+              }
+            }
+    if (command === 'list') {
+        const listurl = messageUrlList.values();
+        const listauthor = messageAuthorList.values();
+        const listdate = messageDateList.values();
+        if(!listurl) return message.channel.send('現在受け付けている集計はありません。');
+        const embed = {
+          "title": "現在受け付けているカウント集計",
+          "description": `[link](${listurl.next().value})\nUser:<@!${listauthor.next().value}>\nDate:${listdate.next().value}`
+  };
+      message.reply({ embeds: [embed] })
+    return;
+  };
+    if (command === 'help') {
     const helpem = {
       "title": "ヘルプ一覧",
       "description": "このBOTで使用できるコマンドの一覧です。",
@@ -76,85 +141,6 @@ client.on('messageCreate', async message => {
     };
     message.reply({ embeds: [helpem] })
   }
-});
-
-//カウント集計
-client.on('messageCreate', async message => {
-  if (!message.content.startsWith(prefix)) return
-  const [command, ...args] = message.content.slice(prefix.length).split(' ')
-  if (command === 'cnt') {
-    const [a, b] = args.map(str => Number(str))
-
-
-    //リアクション数・ロール指定がない場合
-    if (a == undefined) {
-      return message.channel.send('集計したいリアクション数を指定してください。')
-    }
-    else {
-      if (message.mentions.roles.size == 0) {
-        return message.channel.send('ロールを指定してください。')
-      }
-      else {
-
-        //メッセージを送る
-        const role = message.mentions.roles.first();
-        const newMessage = await message.reply(`__リアクション集計中__\n> 目標回数：${a} \n> 対象ロール：${role.name}\n> このBOTのメッセージにリアクションしてください。`)
-
-        //ロールチェック
-        const filter = async (reaction, user) => {
-          return (await message.guild ?.members.fetch(user.id).then((member) => member.roles.cache.has(role.id))) ?? false;
-        };
-
-        const collector = newMessage.createReactionCollector({ filter, max: `${a}`});
-        //集計完了
-        collector.on("end", collected => collectEnd(collected, collector));
-        //集計中のメッセージをリストに登録しておく
-        messageUrlList.add(newMessage.url);
-        messageAuthorList.add(message.author.id);
-        messageDateList.add(message.createdAt.toFormat("YYYY/MM/DD - HH24/MI"));
-        //集計完了後の動作定義
-        function collectEnd(collected, collector) {
-              console.log("reactionCollector End");
-              //集計中のメッセージリストから除去
-              messageUrlList.delete(collector.message.url);
-              messageAuthorList.delete(message.author.id);
-              messageDateList.delete(message.createdAt.toFormat("YYYY/MM/DD - HH24-MI-SS"));
-              //時間取得
-              const date = new Date().toFormat("YYYY/MM/DD HH24時MI分")
-              //埋め込み
-              const Embed = {
-                title: 'リアクション集計完了',
-                fields: [
-                  {
-                    name: '集計したリンク',
-                    value: `[link](${message.url})`,
-                  },
-                  {
-                    name: '終了時刻',
-                    value: `${date}`,
-                  },
-                ],
-                footer: {
-                  text: `対象ロール：${role.name}`,
-                  icon_url: '',
-                },
-              };
-              message.reply({ content: "リアクションの集計が完了しました。", embeds: [Embed] }) && newMessage.delete();
-        }
-      }
-    }
-  }
-  if (command === 'list') {
-      const listurl = messageUrlList.values();
-      const listauthor = messageAuthorList.values();
-      const listdate = messageDateList.values();
-      const embed = {
-        "title": "現在受け付けているカウント集計",
-        "description": `[link](${listurl.next().value})\nUser:<@!${listauthor.next().value}>\nDate:${listdate.next().value}`
-};
-    message.reply({ embeds: [embed] })
-  return;
-}
 });
 
 //メッセージ取得
@@ -253,63 +239,6 @@ client.on("threadUpdate", async (oldThread, newThread) => {
   };
 });
 //=====================================================
-
-//新規カウント集計システム
-client.on('messageCreate', async message => {
-  if (!message.content.startsWith(prefix)) return
-  const [command, ...args] = message.content.slice(prefix.length).split(' ')
-  if (command === 'ncnt') {
-  const [a,b] = args.map(str => Number(str))
-
-  if (!a || message.mentions.roles.size == 0) return message.channel.send("構文エラー:無効なコマンドが送信されました。\n原因として以下の可能性があります。\n> ・カウント数やロールが指定されていなかった\n> ・カウント数とロールの順番が逆である。")
-
-        //メッセージを送る
-        const mentionRoles = await message.mentions.roles.map(r => r.id)
-        const namedRoles = await message.mentions.roles.map(r => r.name)
-        const newMessage = await message.reply(`__リアクション集計中__\n> 目標回数：${a} \n> 対象ロール：${namedRoles}\n> このメッセージにリアクションしてください。`)
-
-        //ロールチェック
-        const filter = async (reaction, user) => {
-          return (await message.guild ?.members.fetch(user.id).then((member) => member.roles.cache.has(mentionRoles))) ?? false;
-        };
-
-        const collector = newMessage.createReactionCollector({ filterd, max: `${a}`});
-        //集計完了
-        collector.on("end", collected => collectEnd(collected, collector));
-        //集計中のメッセージをリストに登録しておく
-        messageUrlList.add(newMessage.url);
-        messageAuthorList.add(message.author.id);
-        messageDateList.add(message.createdAt.toFormat("YYYY/MM/DD - HH24/MI"));
-        //集計完了後の動作定義
-        function collectEnd(collected, collector) {
-              console.log("reactionCollector End");
-              //集計中のメッセージリストから除去
-              messageUrlList.delete(collector.message.url);
-              messageAuthorList.delete(message.author.id);
-              messageDateList.delete(message.createdAt.toFormat("YYYY/MM/DD - HH24-MI-SS"));
-              //時間取得
-              const date = new Date().toFormat("YYYY/MM/DD HH24時MI分")
-              //埋め込み(rich embed だとうまく行かないので普通に)
-              const Embed = {
-                "title": 'リアクション集計完了',
-                "description": `集計したリンク: [link](${message.url})\n 終了時刻: ${date}\n対象ロール: ${role.name}`
-              };
-              message.reply({ content: "リアクションの集計が完了しました。", embeds: [Embed] }) && newMessage.delete();
-       }
-      }
-  if (command === 'list') {
-      const listurl = messageUrlList.values();
-      const listauthor = messageAuthorList.values();
-      const listdate = messageDateList.values();
-    if(listauthor == undefined) return message.channel.send("現在受け付けている集計はありません。");
-      const embed = {
-        "title": "現在受け付けているカウント集計",
-        "description": `[link](${listurl.next().value})\nUser:<@!${listauthor.next().value}>\nDate:${listdate.next().value}`
-      }
-    message.reply({ embeds: [embed] })
-  return;
-}
-});
 
 //ロール付与
 client.on('messageCreate', async message => {
