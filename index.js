@@ -10,7 +10,6 @@ const fetch = require("node-fetch");
 client.on('ready', async () => {
   client.user.setActivity(`${client.guilds.cache.map(guild => guild.memberCount).reduce((p, c) => p + c)}人`, { type: 'WATCHING' });
   console.log(`${client.user.tag}にログインしました。`);
-  const server_id = client.guilds.cache.id();
   const data = [{
     name: "ping",
     description: "BOTの現在のPing値を取得します。"
@@ -30,7 +29,9 @@ client.on('ready', async () => {
       required: true
     }],
   }];
-  await client.application.commands.set(data, 'server_id');
+  client.guilds.cache.forEach((guild) => {
+  await client.application.commands.set(data, `${guild.id}`);
+  });
 });
 
 //時間
