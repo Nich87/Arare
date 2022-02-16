@@ -10,35 +10,57 @@ const fetch = require("node-fetch");
 client.on('ready', async () => {
   client.user.setActivity(`${client.guilds.cache.map(guild => guild.memberCount).reduce((p, c) => p + c)}人`, { type: 'WATCHING' });
   console.log(`${client.user.tag}にログインしました。`);
+  const server_id = client.guild.id();
+  const data = [{
+    name: "ping",
+    description: "BOTの現在のPing値を取得します。"
+  }, {
+    name: "cnt",
+    description: "リアクションのカウントを集計します。",
+    options: [{
+      type: "NUMBER",
+      name: "回数",
+      description: "集計する回数を指定してください。",
+      required: true
+    }],
+    options: [{
+      type: "ROLE",
+      name: "ロール",
+      description: "指定したロールが付与されてる人に限定します。",
+      required: true
+    }],
+  },
+  }];
+  await client.application.commands.set(data, 'server_id');
 });
 
 //時間
 require('date-utils');
 
-//ping
-client.on('messageCreate', message => {
-  if (message.content.includes("ping") && message.mentions.users.has(client.user.id)) {
-    if (message.author.bot) return;
-    const pingem = {
-      "color": 16737977,
-      "fields": [
-        {
-          "name": "📡Bot反応時間",
-          "value": "現在のPing値は" + client.ws.ping + "msです。"
-        }
-      ]
-    };
-    message.reply({ embeds: [pingem] })
-  }
-  else {
-    return;
-  }
-});
-
-//集計中メッセージのリンクを登録
+//集計中メッセージの登録用
 let messageUrlList = new Set();
 let messageAuthorList = new Set();
 let messageDateList = new Set();
+
+client.on("interactionCreate", async (interaction) => {
+    if (!interaction.isCommand()) {
+        return;
+    }
+    if (interaction.commandName === 'ping') {
+        const pingem = {
+          "fields": [
+            {
+              "name": "📡Bot反応時間",
+              "value": "現在のPing値は" + client.ws.ping + "msです。"
+            }
+          ]
+        };
+        await.interaction.reply({ embeds: [pingem] })
+    }
+  if (interaction.commandName === 'cnt') {
+      
+  }
+});
 
 //カウント集計
 client.on('messageCreate', async message => {
