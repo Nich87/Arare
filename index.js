@@ -20,6 +20,8 @@ client.on('ready', async () => {
       type: "NUMBER",
       name: "回数",
       description: "集計する回数を指定してください。",
+    ]},
+    options: [{
       required: true,
       type: "ROLE",
       name: "ロール",
@@ -56,7 +58,7 @@ client.on("interactionCreate", async (interaction) => {
         await interaction.reply({ embeds: [pingem] })
     }
   if (interaction.commandName === 'cnt') {
-     return; 
+     return;
   }
 });
 
@@ -293,7 +295,7 @@ client.on('messageCreate', async message => {
   const [a,b] = args.map(str => Number(str))
 
   if (!a || message.mentions.roles.size == 0) return message.channel.send("構文エラー:無効なコマンドが送信されました。\n原因として以下の可能性があります。\n> ・カウント数やロールが指定されていなかった\n> ・カウント数とロールの順番が逆である。")
-    
+
         //メッセージを送る
         const mentionRoles = await message.mentions.roles.map(r => r.id)
         const namedRoles = await message.mentions.roles.map(r => r.name)
