@@ -326,7 +326,7 @@ client.on('messageCreate', async message => {
   if (!message.content.startsWith(prefix)) return
   const command = message.content.slice(prefix.length).split(' ')
   if (command === 'add-role') {
-    const role = const role = message.mentions.roles.first();
+    const role = message.mentions.roles.first();
     const guild = message.guild.id();
     message.guild.members.fetch();
     .then(members => Promise.all(members.map(member => member.roles.add(`${role.id}`))))
