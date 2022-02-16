@@ -75,7 +75,7 @@ client.on('messageCreate', async message => {
                     },
                     {
                       name: '終了時刻',
-                      value: `${collector.createdTimestamp}`,
+                      value: `${collector.setTimestamp(new Date())}`,
                     },
                   ],
                   footer: {
@@ -162,7 +162,7 @@ client.on('messageCreate', async message => {
       embeds: [{
         footer: {
           icon_url: `${msg.guild.iconURL() === null ? `https://cdn.discordapp.com/attachments/866870931141296138/942606993313660978/SCC.png` : msg.guild.iconURL()}`,
-          text: `${msg.channel.name} | ${msg.createdTimestamp}`
+          text: `${msg.channel.name} | ${msg.createdTimestamp(new Date())}`
         },
         author: {
           name: `${msg.author.username}`,
@@ -217,8 +217,8 @@ client.on('messageCreate', async message => {
 //スレッド周り===========================================
 //スレッド作成
 client.on("threadCreate", async thread => {
-  if(thread.guild.id === 888981896594350132){ return await thread.send(`スレッドが作成されました。\n <@&927377284653002772> <@&889029317139517461> <@!594370135230251028>`)};
-  if(thread.guild.id === 917221958242947072){ return await thread.send(`スレッドが作成されました。\n <@&917221958280687624> <@&940148040445067264> <@&917221958297477191>`)};
+  if(thread.guildId === 888981896594350132){ return await thread.send(`スレッドが作成されました。\n <@&927377284653002772> <@&889029317139517461> <@!594370135230251028>`)};
+  if(thread.guildId === 917221958242947072){ return await thread.send(`スレッドが作成されました。\n <@&917221958280687624> <@&940148040445067264> <@&917221958297477191>`)};
 });
 
 //スレッド削除
