@@ -39,7 +39,7 @@ client.on('messageCreate', async message => {
       const [a, b] = args.map(str => Number(str))
 
 
-      //リアクション数・ロール指定がない場合
+      //リアクション数・ロール指定がないまたは順番が逆な場合
       if (!a || message.mentions.roles.size == 0) return message.channel.send("構文エラー:無効なコマンドが送信されました。\n原因として以下の可能性があります。\n> ・カウント数やロールが指定されていなかった\n> ・カウント数とロールの順番が逆である。");
 
           //メッセージを送る
@@ -66,6 +66,7 @@ client.on('messageCreate', async message => {
                 messageAuthorList.delete(message.author.id);
                 messageDateList.delete(message.createdAt.toFormat("YYYY/MM/DD - HH24/MI"));
                 //埋め込み
+                const date = new Date.toFormat('YYYY/MM/DD HH24:MI-SS')
                 const Embed = {
                   title: 'リアクション集計完了',
                   fields: [
@@ -75,7 +76,7 @@ client.on('messageCreate', async message => {
                     },
                     {
                       name: '終了時刻',
-                      value: `${collector.setTimestamp(new Date())}`,
+                      value: `${date}`,
                     },
                   ],
                   footer: {
