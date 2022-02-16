@@ -143,7 +143,7 @@ client.on('messageCreate', async message => {
 
 //メッセージ取得
 client.on('messageCreate', async message => {
-  const re = new RegExp('https://discord.com/channels/[0-9]\d{16,19}/[0-9]\d{16,19}/[0-9]\d{16,19}')
+  const re = new RegExp('https://discord.com/channels/[0-9]{16~18}/[0-9]{16~18}/[0-9]{16~18}')
   const results = message.content.match(re)
   if (!results) {
     return
@@ -162,7 +162,7 @@ client.on('messageCreate', async message => {
       embeds: [{
         footer: {
           icon_url: `${msg.guild.iconURL() === null ? `https://cdn.discordapp.com/attachments/866870931141296138/942606993313660978/SCC.png` : msg.guild.iconURL()}`,
-          text: `${msg.channel.name} | ${msg.createdTimestamp(new Date())}`
+          text: `${msg.channel.name} | `
         },
         author: {
           name: `${msg.author.username}`,
