@@ -54,10 +54,10 @@ client.on("interactionCreate", async (interaction) => {
             }
           ]
         };
-        await.interaction.reply({ embeds: [pingem] })
+        await interaction.reply({ embeds: [pingem] })
     }
   if (interaction.commandName === 'cnt') {
-      
+     return; 
   }
 });
 
