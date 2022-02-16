@@ -281,10 +281,11 @@ client.on('messageCreate', async message => {
 
         //ロールチェック
         const filter = async (reaction, user) => {
-          return (await message.guild ?.members.fetch(user.id).then((member) => member.roles.cache.has(mentionRoles))) ?? false;
+          return (await message.guild ?.members.fetch(user.id).then((member) => member.roles.cache.has())) ?? false;
         };
+        const filterd = filter.some(mentionRoles);
 
-        const collector = newMessage.createReactionCollector({ filter, max: `${a}`});
+        const collector = newMessage.createReactionCollector({ filterd, max: `${a}`});
         //集計完了
         collector.on("end", collected => collectEnd(collected, collector));
         //集計中のメッセージをリストに登録しておく
