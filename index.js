@@ -29,7 +29,6 @@ client.on('ready', async () => {
       description: "指定したロールが付与されてる人に限定します。",
       required: true
     }],
-  },
   }];
   await client.application.commands.set(data, 'server_id');
 });
