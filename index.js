@@ -19,7 +19,7 @@ client.on('ready', async () => {
   .addNumberOption(option =>
     option.setName('回数')
           .setDescription('集計する回数を指定してください。')
-          .setRequired(true));
+          .setRequired(true))
   .addRoleOption(option =>
     option.setName('ロール')
           .setDescription('集計対象を指定してください。')
