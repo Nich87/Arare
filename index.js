@@ -328,7 +328,7 @@ client.on('messageCreate', async message => {
   if (command === 'add-role') {
     const role = message.mentions.roles.first();
     const guild = message.guild.id();
-    message.guild.members.fetch();
+    message.guild.members.fetch()
     .then(members => Promise.all(members.map(member => member.roles.add(`${role.id}`))))
     .catch(console.error)
     message.reply(`${guild.memberCount}人に${role.name}を付与しました。`)
