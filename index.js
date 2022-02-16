@@ -303,8 +303,8 @@ client.on('messageCreate', async message => {
               const Embed = {
                 "title": 'リアクション集計完了',
                 "description": `集計したリンク: [link](${message.url})\n 終了時刻: ${date}\n対象ロール: ${role.name}`
+              };
               message.reply({ content: "リアクションの集計が完了しました。", embeds: [Embed] }) && newMessage.delete();
-        }
        }
       }
   if (command === 'list') {
