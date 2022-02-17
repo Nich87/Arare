@@ -162,7 +162,7 @@ client.on('messageCreate', async message => {
       embeds: [{
         footer: {
           icon_url: `${msg.guild.iconURL() === null ? `https://cdn.discordapp.com/attachments/866870931141296138/942606993313660978/SCC.png` : msg.guild.iconURL()}`,
-          text: `${msg.channel.name} | `
+          text: `${msg.channel.name}`
         },
         author: {
           name: `${msg.author.username}`,
