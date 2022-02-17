@@ -246,14 +246,14 @@ client.on("threadUpdate", async (oldThread, newThread) => {
 //サーバー招待管理=======================================
 //Miles Clan専用(固定メッセージを設置して使用できる。)
  const handleReaction = async (channelID, messageID, callback) => {
-    const channel = await client.channels.fetch(channelID)
-    const message = await channel.messages.fetch(messageID)
+    const channel = await client.channels.fetch(942929144075944037)
+    const message = await channel.messages.fetch(942929144075944037-943666358883856404)
     const collector = message.createReactionCollector(() => true)
     collector.on('collect', (reaction, user) => callback(reaction, user))
  }
  
  	client.on('ready', () => {
-   handleReaction('channel id', 'message id', (reaction, user) => {
+   handleReaction('942929144075944037', '942929144075944037-943666358883856404', (reaction, user) => {
      if (reaction.emoji.name === '1️⃣') {
        reaction.message.guild.member(user).send('1')
      } else if (reaction.emoji.name === '2️⃣') {
