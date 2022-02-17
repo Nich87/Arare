@@ -158,7 +158,7 @@ client.on('messageCreate', async message => {
   }
 
   channelch.messages.fetch(message_id)
-    .then(msg => msg.emebds[0] == undefined ? message.reply({
+    .then(msg => message.reply({
       embeds: [{
         footer: {
           icon_url: `${msg.guild.iconURL() === null ? `https://cdn.discordapp.com/attachments/866870931141296138/942606993313660978/SCC.png` : msg.guild.iconURL()}`,
