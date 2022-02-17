@@ -60,7 +60,6 @@ client.on('messageCreate', async message => {
           messageDateList.add(message.createdAt.toFormat("YYYY/MM/DD - HH24/MI"));
           //集計完了後の動作定義
           function collectEnd(collected, collector) {
-                console.log("reactionCollector End");
                 //集計中のメッセージリストから除去
                 messageUrlList.delete(collector.message.url);
                 messageAuthorList.delete(message.author.id);
@@ -243,5 +242,29 @@ client.on("threadUpdate", async (oldThread, newThread) => {
   };
 });
 //=====================================================
+
+//サーバー招待管理=======================================
+//Miles Clan専用(固定メッセージを設置して使用できる。)
+ const handleReaction = async (channelID, messageID, callback) => {
+    const channel = await client.channels.fetch(channelID)
+    const message = await channel.messages.fetch(messageID)
+    const collector = message.createReactionCollector(() => true)
+    collector.on('collect', (reaction, user) => callback(reaction, user))
+ }
+ 
+ 	client.on('ready', () => {
+   handleReaction('channel id', 'message id', (reaction, user) => {
+     if (reaction.emoji.name === '1️⃣') {
+       reaction.message.guild.member(user).send('1')
+     } else if (reaction.emoji.name === '2️⃣') {
+       reaction.message.guild.member(user).send('2')
+     } else if (reaction.emoji.name === '3️⃣') {
+       reaction.message.guild.member(user).send('3')
+     } else { 
+       reaction.message.reactions.emoji().remove()
+     }
+   })
+ })
+//===================================================
 
 client.login(process.env.token);
