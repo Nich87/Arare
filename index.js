@@ -13,16 +13,17 @@ client.on('ready', async () => {
   client.user.setActivity(`#/help | ${client.guilds.cache.map(guild => guild.memberCount).reduce((p, c) => p + c)}人`, { type: 'PLAYING' });
   const server_id = client.guilds.cache.get();
   console.log(`${client.user.tag}にログインしました。`);
-    const data = [{
-      name: "add-role-to-everyone",
-      description: "サーバーにいるメンバー全員にロールを付与します。",
-      options: [{
+  const data = [{
+    name: "add-role-to-everyone",
+    description: "サーバーにいるメンバー全員にロールを付与します。",
+    options: [{
       type: "ROLE",
       name: "ロール",
       description: "付与するロールを指定してください。",
       required: true,
-    },
-    {
+    }],
+  },
+  {
      name: "add-role-to-without-roles",
      description: "ロールが付与されていない人にロールを付与します",
      options: [{
@@ -31,7 +32,8 @@ client.on('ready', async () => {
      description: "付与するロールを指定してください。",
      required: true,
    }],
-  }]
+ },
+]
   await client.application.commands.set(data);
 });
 
