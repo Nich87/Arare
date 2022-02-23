@@ -13,7 +13,7 @@ client.on('ready', async () => {
   client.user.setActivity(`#/help | ${client.guilds.cache.map(guild => guild.memberCount).reduce((p, c) => p + c)}人`, { type: 'PLAYING' });
   const server_id = client.guilds.cache.get();
   console.log(`${client.user.tag}にログインしました。`);
-    const add-role-to-everyone = [{
+    let add-role-to-everyone = [{
       name: "add-role-to-everyone",
       description: "サーバーにいるメンバー全員にロールを付与します。",
       options: [{
@@ -23,7 +23,7 @@ client.on('ready', async () => {
       required: true,
     }],
   }]
-   const add-role-to-without-roles = [{
+   let add-role-to-without-roles = [{
      name: "add-role-to-without-roles",
      description: "ロールが付与されていない人にロールを付与します",
      options: [{
