@@ -247,6 +247,7 @@ client.on("threadUpdate", async (oldThread, newThread) => {
 //イベント関連==========================================
 client.on('guildScheduledEventCreate', async (event) => {
   const server = event.guild();
+  console.log('確認')
   if(server.id === '917221958242947072'){
     const embed = {
       "title": `${event.name}`,
