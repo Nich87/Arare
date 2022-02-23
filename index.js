@@ -32,7 +32,7 @@ client.on("interactionCreate", async (interaction) => {
     }
     if (interaction.commandName === 'add-role-to-everyone') {
       const role = interaction.options.getRole('ロール');
-      interaction.guild.members.fetch();
+      interaction.guild.members.fetch()
       .then(members => Promise.all(members.map(member => member.roles.add(`${role.id}`))))
       .catch(console.error)
     }
