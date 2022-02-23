@@ -22,7 +22,7 @@ client.on('ready', async () => {
       description: "付与するロールを指定してください。",
       required: true,
     }],
-     name: "add-role-to-everyone-without-roles",
+     name: "add-role-to-without-roles",
      description: "ロールが付与されていない人にロールを付与します",
      options: [{
      type: "ROLE",
