@@ -22,7 +22,7 @@ client.on('ready', async () => {
       required: true,
     }],
   };
-  await client.application.commands.set(data);
+  await client.application.commands.set(data,);
 });
 
 client.on("interactionCreate", async (interaction) => {
