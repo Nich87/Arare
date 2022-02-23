@@ -2,7 +2,7 @@
 コミュニティ等の運営で使用されるBOTです。
 
 ## フィードバックおよび招待URL
-[こちらのサーバーでお願いします。](https://discord.gg/hGjg6cQPwS)
+[こちらのサーバーでお願いします。](https://discord.gg/R4fpnvHteP)
 
 ## 機能一覧
 
