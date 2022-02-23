@@ -12,7 +12,7 @@ const fs = require('fs');
 client.on('ready', async () => {
   client.user.setActivity(`#/help | ${client.guilds.cache.map(guild => guild.memberCount).reduce((p, c) => p + c)}人`, { type: 'PLAYING' });
   console.log(`${client.user.tag}にログインしました。`);
-    const server = client.guilds.server();
+    const server = client.guilds..cache.id();
     const data = [{
       name: "add-role-to-everyone",
       description: "サーバーにいるメンバー全員にロールを付与します。",
@@ -23,7 +23,7 @@ client.on('ready', async () => {
       required: true,
     }],
   }];
-  await client.application.commands.set(data, `${server.id}`);
+  await client.application.commands.set(data, `${server}`);
 });
 
 client.on("interactionCreate", async (interaction) => {
