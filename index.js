@@ -7,6 +7,7 @@ const options = {
 const client = new Client(options);
 const fetch = require("node-fetch");
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const fs = require('fs');
 
 client.on('ready', async () => {
   client.user.setActivity(`#/help | ${client.guilds.cache.map(guild => guild.memberCount).reduce((p, c) => p + c)}人`, { type: 'PLAYING' });
@@ -241,6 +242,27 @@ client.on("threadUpdate", async (oldThread, newThread) => {
     newThread.parent.send(`スレッド${newThread.name}${newThread.archived ? "はアーカイブされました。" : "のアーカイブが解除されました。"}`)
   };
 });
+//=====================================================
+
+//イベント関連==========================================
+client.on('guildScheduledEventCreate', async (event) => {
+  const server = event.guild();
+  if(server.id === '917221958242947072'){
+    const embed = {
+      "title": `${event.name}`,
+      "description": `\n${event.description}\n\n[参加リンク](${event.createInviteURL})\n\n作成者：${event.creator}\n\n開始日：${event.scheduledStartAt}`
+    };
+    client.channels.cache.get('917221958603653149').send({ embeds: [embed]})
+  } else if(server.id === '866870907841806376'){
+    const embed = {
+      "title": `${event.name}`,
+      "description": `\n${event.description}\n\n[参加リンク](${event.createInviteURL})\n\n作成者：${event.creator}\n\n開始日：${event.scheduledStartAt}`
+    };
+    client.channels.cache.get('866870907841806380').send({ embeds: [embed]})
+  } else {
+    return;
+  }
+})
 //=====================================================
 
 client.login(process.env.token);

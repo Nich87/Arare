@@ -24,3 +24,16 @@ client.on("interactionCreate", async (interaction) => {
       await interaction.reply({ embeds: [pingem] })
     }
 });
+
+//  const server_id = client.guilds.server.id();
+//  const data = [{
+//    name: "sumcode",
+//    description: "フレンドコードを検索します。",
+//    options: [{
+//    type: "USER",
+//    name: "ユーザー",
+//    description: "検索するユーザーを指定してください。",
+//    required: true,
+//}],
+//  }];
+//  await client.application.commands.set(data, `${server_id}`);
