@@ -23,7 +23,7 @@ client.on('ready', async () => {
       required: true,
     }],
   }];
-  await client.application.commands.set(data, `${server.id}`);
+  await client.application.commands.set(data, `${server}`);
 });
 
 client.on("interactionCreate", async (interaction) => {
