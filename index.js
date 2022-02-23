@@ -20,8 +20,8 @@ client.on('ready', async () => {
       type: "ROLE",
       name: "ロール",
       description: "付与するロールを指定してください。",
-      required: true,
-    }],
+      required: true
+    }]
   };
   await client.application.commands.set(data, '${server_id}');
 });
