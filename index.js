@@ -22,6 +22,14 @@ client.on('ready', async () => {
       description: "付与するロールを指定してください。",
       required: true,
     }],
+     name: "add-role-to-everyone-without-roles",
+     description: "ロールが付与されていない人にロールを付与します",
+     options: [{
+     type: "ROLE",
+     name: "ロール",
+     description: "付与するロールを指定してください。",
+     required: true,
+   }],
   }];
   await client.application.commands.set(data);
 });
@@ -33,6 +41,13 @@ client.on("interactionCreate", async (interaction) => {
     if (interaction.commandName === 'add-role-to-everyone') {
       const role = interaction.options.getRole('ロール');
       interaction.guild.members.fetch()
+      .then(members => Promise.all(members.map(member => member.roles.add(`${role.id}`))))
+      .catch(console.error)
+      await interaction.reply(`${role.name}を全員に付与しました。`)
+    }
+    if (interaction.commandName === 'add-role-to-everyone-without-roles') {
+      const role = interaction.options.getRole('ロール');
+      interaction.guild.members.fetch(member.roles.has())
       .then(members => Promise.all(members.map(member => member.roles.add(`${role.id}`))))
       .catch(console.error)
       await interaction.reply(`${role.name}を全員に付与しました。`)
