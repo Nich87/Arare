@@ -52,7 +52,7 @@ client.on("interactionCreate", async (interaction) => {
     if (interaction.commandName === 'add-role-to-everyone-without-roles') {
       const role = interaction.options.getRole('ロール');
       interaction.guild.members.fetch()
-      .then(members => Promise.all(members.map(member => member.roles.cache.size === 0 ?  member.roles.add(`${role.id}`) : return)))
+      .then(members => Promise.all(members.map(member => member.roles.cache.size === 0 ?  member.roles.add(`${role.id}`) : "")))
       .catch(console.error)
       await interaction.reply(`ロール：${role.name}をロールがついていない人に付与しました。`)
     }
