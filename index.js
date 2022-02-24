@@ -72,17 +72,17 @@ client.on("interactionCreate", async (interaction) => {
     if (interaction.commandName === 'add-role-to-without-roles') {
       const role = interaction.options.getRole('ロール');
       interaction.guild.members.fetch()
-      .then(members => Promise.all(members.map(member => member.roles.cache.size === 0 ?  member.roles.add(`${role.id}`) : "")))
+      .then(members => Promise.all(members.map(member => member.roles.cache.size == 0 ? member.roles.add(`${role.id}`) : "")))
       .catch(console.error)
       await interaction.reply(`ロール：${role.name}をロールがついていない人に付与しました。`)
     }
     if (interaction.commandName === 'add-code') {
       const code = interaction.options.getString('コード');
-      await DB.set(`${interaction.author.username}`, `${code}`);
+      await DB.set(`${interaction.user}`, `${code}`);
       const key = await DB.get(`${interaction.author.username}`);
       const embed = {
         "title": "コードを登録しました。",
-        "description": `ユーザーネーム：${interaction.author.username}\nフレンドコード：${key}`
+        "description": `ユーザーネーム：${interaction.user}\nフレンドコード：${key}`
       }
       await interaction.reply({ embeds: [embed] })
     }
