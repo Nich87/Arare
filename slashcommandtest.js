@@ -37,3 +37,22 @@ client.on("interactionCreate", async (interaction) => {
 //}],
 //  }];
 //  await client.application.commands.set(data, `${server_id}`);
+if (interaction.commandName === 'add-code') {
+  const code = interaction.options.getString('コード');
+  await DB.set(`${interaction.user}`, `${code}`);
+  const key = await DB.get(`${interaction.author.username}`);
+  const embed = {
+    "title": "コードを登録しました。",
+    "description": `ユーザーネーム：${interaction.user}\nフレンドコード：${key}`
+  }
+  await interaction.reply({ embeds: [embed] })
+}
+if (interaction.commandName === 'sum-code') {
+  const username = interaction.options.getString('ユーザー名');
+  const key = await DB.get(`${username}`);
+  const embed = {
+    "title": "検索結果",
+    "description": `ユーザーネーム：${username}\nフレンドコード：${key}`
+  }
+  await interaction.reply({ embeds: [embed] })
+}
