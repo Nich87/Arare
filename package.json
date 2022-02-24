@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@discordjs/builders": "^0.12.0",
+    "@replit/database": "^2.0.1",
     "date-utils": "^1.2.21",
     "discord.js": "^13.6.0"
   }

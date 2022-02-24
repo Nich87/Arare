@@ -8,6 +8,8 @@ const client = new Client(options);
 const fetch = require("node-fetch");
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const fs = require('fs');
+const DB = require("@replit/database");
+const db = new DB();
 
 client.on('ready', async () => {
   client.user.setActivity(`#/help | ${client.guilds.cache.size}個のサーバー | ${client.guilds.cache.map(guild => guild.memberCount).reduce((p, c) => p + c)}人`, { type: 'PLAYING' });
@@ -50,7 +52,7 @@ client.on("interactionCreate", async (interaction) => {
     if (interaction.commandName === 'add-role-to-everyone-without-roles') {
       const role = interaction.options.getRole('ロール');
       interaction.guild.members.fetch()
-      .then(members => Promise.all(members.map(member => member.roles.has() ? return : member.roles.add(`${role.id}`))))
+      .then(members => Promise.all(members.map(member => member.roles.add(`${role.id}`))))
       .catch(console.error)
       await interaction.reply(`ロール：${role.name}をロールがついていない人に付与しました。`)
     }
