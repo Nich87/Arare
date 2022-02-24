@@ -33,7 +33,27 @@ client.on('ready', async () => {
      description: "付与するロールを指定してください。",
      required: true,
    }],
- },
+  },
+  {
+     name: "add-code",
+     description: "フレンドコードを登録します。",
+     options: [{
+     type: "STRING",
+     name: "コード",
+     description: "フレンドコードを入力してください。",
+     required: true,
+   }],
+  },
+  {
+     name: "sum-code",
+     description: "フレンドコードを検索します。",
+     options: [{
+     type: "STRING",
+     name: "ユーザー名",
+     description: "検索するユーザー名を入力してください。",
+     required: true,
+    }]
+  },
 ]
   await client.application.commands.set(data);
 });
@@ -49,13 +69,23 @@ client.on("interactionCreate", async (interaction) => {
       .catch(console.error)
       await interaction.reply(`ロール：${role.name}を全員に付与しました。`)
     }
-    if (interaction.commandName === 'add-role-to-everyone-without-roles') {
+    if (interaction.commandName === 'add-role-to-without-roles') {
       const role = interaction.options.getRole('ロール');
       interaction.guild.members.fetch()
       .then(members => Promise.all(members.map(member => member.roles.cache.size === 0 ?  member.roles.add(`${role.id}`) : "")))
       .catch(console.error)
       await interaction.reply(`ロール：${role.name}をロールがついていない人に付与しました。`)
     }
+    if (interaction.commandName === 'add-code') {
+      const username = interaction.options.getString('ユーザー名');
+      const key = await DB.get(`${username}`);
+      const embed = {
+        "title": "検索結果",
+        "description": `ユーザーネーム：${username}\nフレンドコード：${key}`
+      }
+      await interaction.reply({ embeds: [embed] })
+    }
+    if (interaction.commandName === 'sum-code') {
 });
 
 //時間
