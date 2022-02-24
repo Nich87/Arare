@@ -56,3 +56,47 @@ if (interaction.commandName === 'sum-code') {
   }
   await interaction.reply({ embeds: [embed] })
 }
+
+
+const data = [{
+  name: "add-role-to-everyone",
+  description: "サーバーにいるメンバー全員にロールを付与します。",
+  options: [{
+    type: "ROLE",
+    name: "ロール",
+    description: "付与するロールを指定してください。",
+    required: true,
+  }],
+},
+{
+   name: "add-role-to-without-roles",
+   description: "ロールが付与されていない人にロールを付与します",
+   options: [{
+   type: "ROLE",
+   name: "ロール",
+   description: "付与するロールを指定してください。",
+   required: true,
+ }],
+},
+{
+   name: "add-code",
+   description: "フレンドコードを登録します。",
+   options: [{
+   type: "STRING",
+   name: "コード",
+   description: "フレンドコードを入力してください。",
+   required: true,
+ }],
+},
+{
+   name: "sum-code",
+   description: "フレンドコードを検索します。",
+   options: [{
+   type: "STRING",
+   name: "ユーザー名",
+   description: "検索するユーザー名を入力してください。",
+   required: true,
+  }]
+},
+]
+await client.application.commands.set(data);

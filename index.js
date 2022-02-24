@@ -14,68 +14,6 @@ const db = new DB();
 client.on('ready', async () => {
   client.user.setActivity(`#/help | ${client.guilds.cache.size}個のサーバー | ${client.guilds.cache.map(guild => guild.memberCount).reduce((p, c) => p + c)}人`, { type: 'PLAYING' });
   console.log(`${client.user.tag}にログインしました。`);
-  const data = [{
-    name: "add-role-to-everyone",
-    description: "サーバーにいるメンバー全員にロールを付与します。",
-    options: [{
-      type: "ROLE",
-      name: "ロール",
-      description: "付与するロールを指定してください。",
-      required: true,
-    }],
-  },
-  {
-     name: "add-role-to-without-roles",
-     description: "ロールが付与されていない人にロールを付与します",
-     options: [{
-     type: "ROLE",
-     name: "ロール",
-     description: "付与するロールを指定してください。",
-     required: true,
-   }],
-  },
-  {
-     name: "add-code",
-     description: "フレンドコードを登録します。",
-     options: [{
-     type: "STRING",
-     name: "コード",
-     description: "フレンドコードを入力してください。",
-     required: true,
-   }],
-  },
-  {
-     name: "sum-code",
-     description: "フレンドコードを検索します。",
-     options: [{
-     type: "STRING",
-     name: "ユーザー名",
-     description: "検索するユーザー名を入力してください。",
-     required: true,
-    }]
-  },
-]
-  await client.application.commands.set(data);
-});
-
-client.on("interactionCreate", async (interaction) => {
-    if (!interaction.isCommand()) {
-        return;
-    }
-    if (interaction.commandName === 'add-role-to-everyone') {
-      const role = interaction.options.getRole('ロール');
-      interaction.guild.members.fetch()
-      .then(members => Promise.all(members.map(member => member.roles.add(`${role.id}`))))
-      .catch(console.error)
-      await interaction.reply(`ロール：${role.name}を全員に付与しました。`)
-    }
-    if (interaction.commandName === 'add-role-to-without-roles') {
-      const role = interaction.options.getRole('ロール');
-      interaction.guild.members.fetch()
-      .then(members => Promise.all(members.map(member => member.roles.cache.size == 0 ? member.roles.add(`${role.id}`) : "")))
-      .catch(console.error)
-      await interaction.reply(`ロール：${role.name}をロールがついていない人に付与しました。`)
-    }
 });
 
 //時間
@@ -203,6 +141,20 @@ client.on('messageCreate', async message => {
       ]
     };
     message.reply({ embeds: [helpem] })
+  };
+  if (command === 'add-role') {
+    const role = message.mentions.roles.first();
+    message.guild.members.fetch()
+    .then(members => Promise.all(members.map(member => member.roles.add(`${role.id}`))))
+    .catch(console.error)
+    await message.reply(`ロール：${role.name}を全員に付与しました。`)
+  };
+  if (command === 'add-role-noroles') {
+    const role = message.mentions.roles.first();
+    message.guild.members.fetch()
+    .then(members => Promise.all(members.map(member => member.roles.cache.size == 0 ? member.roles.add(`${role.id}`) : "")))
+    .catch(console.error)
+    await message.reply(`ロール：${role.name}をロールがついていない人に付与しました。`)
   }
 });
 
