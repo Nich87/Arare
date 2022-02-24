@@ -77,6 +77,16 @@ client.on("interactionCreate", async (interaction) => {
       await interaction.reply(`ロール：${role.name}をロールがついていない人に付与しました。`)
     }
     if (interaction.commandName === 'add-code') {
+      const code = interaction.options.getString('コード');
+      await DB.set(`${interaction.author.username}`, `${code}`);
+      const key = await DB.get(`${interaction.author.username}`);
+      const embed = {
+        "title": "コードを登録しました。",
+        "description": `ユーザーネーム：${interaction.author.username}\nフレンドコード：${key}`
+      }
+      await interaction.reply({ embeds: [embed] })
+    }
+    if (interaction.commandName === 'sum-code') {
       const username = interaction.options.getString('ユーザー名');
       const key = await DB.get(`${username}`);
       const embed = {
@@ -85,7 +95,6 @@ client.on("interactionCreate", async (interaction) => {
       }
       await interaction.reply({ embeds: [embed] })
     }
-    if (interaction.commandName === 'sum-code') {
 });
 
 //時間
