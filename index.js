@@ -8,8 +8,6 @@ const client = new Client(options);
 const fetch = require("node-fetch");
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const fs = require('fs');
-const DB = require("@replit/database");
-const db = new DB();
 
 client.on('ready', async () => {
   client.user.setActivity(`#/help | ${client.guilds.cache.size}個のサーバー | ${client.guilds.cache.map(guild => guild.memberCount).reduce((p, c) => p + c)}人`, { type: 'PLAYING' });
