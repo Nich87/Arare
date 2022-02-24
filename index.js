@@ -34,7 +34,7 @@ client.on('ready', async () => {
    }],
  },
 ]
-  await client.application.commands.set(data, `${server_id}`);
+  await client.application.commands.set(data);
 });
 
 client.on("interactionCreate", async (interaction) => {
