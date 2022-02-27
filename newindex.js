@@ -56,16 +56,16 @@ client.on('messageCreate', async message => {
                 .then((pingcheck) => pingcheck.edit(`botの速度|${pingcheck.createdTimestamp - message.createdTimestamp} ms`));
             break;
 
-        case 'add-role':
+        case 'add-role':{
             const role = message.mentions.roles.first();
             message.guild.members.fetch()
                 .then(members => Promise.all(members.map(member => member.roles.add(`${role.id}`))))
                 .catch(console.error)
             await message.reply(`ロール:${role.name}を全員に付与しました。`)
             break;
+        }
 
-
-        case 'add-role-noroles':
+        case 'add-role-noroles':{
             const role = message.mentions.roles.first();
             message.guild.members.fetch()
                 .then(members => Promise.all(members.map(member => member.roles.cache.size === 1 ? member.roles.add(`${role.id}`) : member.roles.remove(`${role.id}`))))
@@ -73,6 +73,7 @@ client.on('messageCreate', async message => {
             await message.reply(`ロール:${role}をロールがついていない人に付与しました。`)
             break;
 
+        }
 
         case 'cnt':
             const [a, b] = args.map(str => Number(str));
@@ -135,30 +136,30 @@ client.on('messageCreate', async message => {
             break;
 
         case 'user':
-            const member = fetchData(message);
+            const member = await fetchData(message);
             const status_ja = (status) =>{
                 switch (status){
                     case 'online': return 'オンライン';
                     case 'offline': return 'オフライン';
                     case 'dnd': return '取り込み中';
-                    case 'idle': return '取り込み中';
+                    case 'idle': return '退席中';
                 }
             }
-            const embed = new MessageEmbed()
-                .setTitle(`───${member.user?.username}さんの情報───`)
-                .setDescription(`${member.user?.username}さんの情報を表示しています`)
+            const panel = new MessageEmbed()
+                .setTitle(`───${member.user.username}さんの情報───`)
+                .setDescription(`${member.user.username}さんの情報を表示しています`)
                 .setTimestamp(new Date())
                 .setFooter({ icon_url: message.guild.iconURL(), text: `サーバー名:${message.guild.name}`})
-                .setThumbnail(member.user.avatarURL())
+                .setThumbnail(member.displayAvatarURL)
                 .addFields([
-                    {name: "ユーザータグ", value: member.user.tag},
-                    {name: "ユーザーメンション", value: member},
-                    {name: "ユーザーID", value: member.id},
-                    {name: "アカウントの種類", value: member.bot ? "BOT" : "USER", inline:true},
-                    { name: "現在のステータス", value: status_ja(member.presence.status), inline:true},
-                    { name: "サーバー名", value: member.guild}
+                    { name: "ユーザータグ", value: member.user.discriminator },
+                    { name: "ユーザーメンション", value: `<@${member.user.id}>` },
+                    { name: "ユーザーID", value: member.user.id },
+                    { name: "アカウントの種類", value: member.user.bot ? "BOT" : "USER", inline:true },
+                    { name: "現在のステータス", value: status_ja(member.presence.status), inline:true },
+                    { name: "サーバー名", value: message.guild.name }
                 ])
-            message.channel.send({ embeds: [embed] });
+            message.channel.send({ embeds: [panel] });
             break;
     }
 });
@@ -189,10 +190,10 @@ client.on("threadUpdate", async (oldThread, newThread) => {
     };
 });
 
-function fetchData(message){
+async function fetchData(message){
     const user_id = (message.mentions.members.size > 0) ? message.mentions.members.first().id : args[0];
     if (!user_id) return message.channel.send({ content: "エラー: メンバーが指定されていません\nIDかメンションで指定してください" });
-    const member = message.guild.members.fetch(ban_user_id);
+    const member = await message.guild.members.fetch(user_id);
     if (!member) return message.channel.send({ content: "エラー: 指定されたIDが見つかりません" });
     return member;
 }
