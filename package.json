@@ -1,13 +1,13 @@
 {
-  "name": "loveaim-bot",
-  "version": "1.0.0",
+  "name": "arare-bot",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "node index.js"
   },
   "engines": {
-    "node": ">=16.6.0"
+    "node": ">=16.14.0"
   },
   "keywords": "Puton",
   "author": "",
