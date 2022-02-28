@@ -16,31 +16,28 @@ client.on('ready', () => {
 });
 
 client.on('messageCreate', async message => {
-    if (message.author.bot) return;
-    if (message.content.indexOf(prefix) !== 0) return;
+    if (message.author.bot || message.content.indexOf(prefix) !== 0) return;
     const [command, ...args] = message.content.slice(prefix.length).split(' ');
 
     switch (command) {
-        //BAN機能
         case 'ban':
             if (!message.member.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) return message.channel.send("❌ 権限が不足しています。");
 
-            const ban_member = fetchData(message);
-            ban_member.ban()
+            const ban_member = await fetchData(message);
+            ban_member.ban();
                 .then((banned_user) => {
-                    return message.channel.send({ content: `${banned_user.user.tag} をBanしました` });
-                })
+                return message.channel.send({ content: `${banned_user.user.tag} をBanしました` });
+            })
                 .catch(reason => {
                     console.warn(reason);
                     return message.channel.send({ content: "エラーが発生しました" });
                 });
             break;
 
-        //kick機能
         case 'kick':
             if (!message.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS)) return message.channel.send("❌ 権限が不足しています。");
 
-            const kick_member = fetchData(message);
+            const kick_member = await fetchData(message);
             kick_member.kick()
                 .then((kicked_user) => {
                     return message.channel.send({ content: `${kicked_user.user.tag} をKickしました` });
@@ -56,16 +53,17 @@ client.on('messageCreate', async message => {
                 .then((pingcheck) => pingcheck.edit(`botの速度|${pingcheck.createdTimestamp - message.createdTimestamp} ms`));
             break;
 
-        case 'add-role':
+        case 'add-role': {
             const role = message.mentions.roles.first();
             message.guild.members.fetch()
                 .then(members => Promise.all(members.map(member => member.roles.add(`${role.id}`))))
                 .catch(console.error)
             await message.reply(`ロール:${role.name}を全員に付与しました。`)
             break;
+        }
 
 
-        case 'add-role-noroles':
+        case 'add-role-noroles': {
             const role = message.mentions.roles.first();
             message.guild.members.fetch()
                 .then(members => Promise.all(members.map(member => member.roles.cache.size === 1 ? member.roles.add(`${role.id}`) : member.roles.remove(`${role.id}`))))
@@ -73,6 +71,7 @@ client.on('messageCreate', async message => {
             await message.reply(`ロール:${role}をロールがついていない人に付与しました。`)
             break;
 
+        }
 
         case 'cnt':
             const [a, b] = args.map(str => Number(str));
@@ -83,7 +82,6 @@ client.on('messageCreate', async message => {
             //メッセージを送る
             const role = message.mentions.roles.first();
             const newMessage = await message.reply(`__リアクション集計中__\n> 目標回数：${a} \n> 対象ロール：${role.name}\n> このBOTのメッセージにリアクションしてください。`);
-
             //ロールチェック
             const filter = async (reaction, user) => await message.guild?.members.fetch(user.id).then((member) => member.roles.cache.has(role.id)) ?? false;
 
@@ -135,30 +133,30 @@ client.on('messageCreate', async message => {
             break;
 
         case 'user':
-            const member = fetchData(message);
-            const status_ja = (status) =>{
-                switch (status){
+            const member = await fetchData(message);
+            const status_ja = (status) => {
+                switch (status) {
                     case 'online': return 'オンライン';
                     case 'offline': return 'オフライン';
                     case 'dnd': return '取り込み中';
                     case 'idle': return '取り込み中';
                 }
             }
-            const embed = new MessageEmbed()
-                .setTitle(`───${member.user?.username}さんの情報───`)
-                .setDescription(`${member.user?.username}さんの情報を表示しています`)
+            const panel = new MessageEmbed()
+                .setTitle(`───${member.user.username}さんの情報───`)
+                .setDescription(`${member.user.username}さんの情報を表示しています`)
                 .setTimestamp(new Date())
-                .setFooter({ icon_url: message.guild.iconURL(), text: `サーバー名:${message.guild.name}`})
-                .setThumbnail(member.user.avatarURL())
+                .setFooter({ text: `実行者:${message.author.username}` })
+                .setThumbnail(member.displayAvatarURL({ dynamic: true }))
                 .addFields([
-                    {name: "ユーザータグ", value: member.user.tag},
-                    {name: "ユーザーメンション", value: member},
-                    {name: "ユーザーID", value: member.id},
-                    {name: "アカウントの種類", value: member.bot ? "BOT" : "USER", inline:true},
-                    { name: "現在のステータス", value: status_ja(member.presence.status), inline:true},
-                    { name: "サーバー名", value: member.guild}
+                    { name: "ユーザータグ", value: member.user.discriminator },
+                    { name: "ユーザーメンション", value: `<@${member.user.id}>` },
+                    { name: "ユーザーID", value: member.user.id },
+                    { name: "アカウントの種類", value: member.user.bot ? "BOT" : "USER", inline: true },
+                    { name: "現在のステータス", value: status_ja(member.presence.status), inline: true },
+                    { name: "サーバー名", value: message.guild.name }
                 ])
-            message.channel.send({ embeds: [embed] });
+            message.channel.send({ embeds: [panel] });
             break;
     }
 });
@@ -166,33 +164,34 @@ client.on('messageCreate', async message => {
 //スレッド作成
 client.on("threadCreate", async thread => {
     if (thread.guildId === '888981896594350132') {
-        await thread.send(`スレッドが作成されました。\n <@&927377284653002772> <@&889029317139517461> <@!594370135230251028>`)
+        await thread.send(`スレッドが作成されました。\n <@&927377284653002772> <@&889029317139517461> <@!594370135230251028>`);
     } else if (thread.guildId === '917221958242947072') {
-        await thread.send(`スレッドが作成されました。\n <@&917221958280687624> <@&940148040445067264> <@&917221958297477191>`)
+        await thread.send(`スレッドが作成されました。\n <@&917221958280687624> <@&940148040445067264> <@&917221958297477191>`);
     };
 });
 
 //スレッド削除
 client.on("threadDelete", async thread => {
-    thread.parent.send(`スレッド${thread.name}は削除されました。`)
+    thread.parent.send(`スレッド${thread.name}は削除されました。`);
 });
 
 //スレッドアーカイブ
 //スレッド名前変更
 client.on("threadUpdate", async (oldThread, newThread) => {
-    const status = oldThread.archived == newThread.archived;
-    if (status == true) {
-        newThread.parent.send(`スレッド${oldThread.name}は${newThread.name}に変更されました。`)
+    const status = oldThread.archived === newThread.archived;
+    if (status === true) {
+        newThread.parent.send(`スレッド${oldThread.name}は${newThread.name}に変更されました。`);
     };
-    if (status == false) {
-        newThread.parent.send(`スレッド${newThread.name}${newThread.archived ? "はアーカイブされました。" : "のアーカイブが解除されました。"}`)
+    if (status === false) {
+        newThread.parent.send(`スレッド${newThread.name}${newThread.archived ? "はアーカイブされました。" : "のアーカイブが解除されました。"}`);
     };
 });
+//=====================================================
 
-function fetchData(message){
+async function fetchData(message) {
     const user_id = (message.mentions.members.size > 0) ? message.mentions.members.first().id : args[0];
     if (!user_id) return message.channel.send({ content: "エラー: メンバーが指定されていません\nIDかメンションで指定してください" });
-    const member = message.guild.members.fetch(ban_user_id);
+    const member = await message.guild.members.fetch(user_id);
     if (!member) return message.channel.send({ content: "エラー: 指定されたIDが見つかりません" });
     return member;
 }
