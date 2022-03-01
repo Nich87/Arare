@@ -146,7 +146,7 @@ client.on('messageCreate', async message => {
                 .setTitle(`───${member.user.username}さんの情報───`)
                 .setDescription(`${member.user.username}さんの情報を表示しています`)
                 .setTimestamp(new Date())
-                .setFooter({ text: `実行者:${message.author.username}` })
+                .setFooter({ text: `実行者 : ${message.author.username}` })
                 .setThumbnail(member.displayAvatarURL({ dynamic: true }))
                 .addFields([
                     { name: "ユーザータグ", value: member.user.discriminator },
