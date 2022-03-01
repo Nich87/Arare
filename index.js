@@ -66,7 +66,7 @@ client.on('messageCreate', async message => {
         case 'add-role-noroles': {
             const role = message.mentions.roles.first();
             message.guild.members.fetch()
-                .then(members => Promise.all(members.map(member => member.roles.cache.size === 0 ? member.roles.add(`${role.id}`) : member.roles.remove(`${role.id}`))))
+                .then(members => Promise.all(members.map(member => member.roles.cache.size === 1 ? member.roles.add(`${role.id}`) : member.roles.remove(`${role.id}`))))
                 .catch(console.error)
             await message.reply(`ロール:${role}をロールがついていない人に付与しました。`)
             break;
