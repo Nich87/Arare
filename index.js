@@ -189,6 +189,7 @@ client.on("threadUpdate", async (oldThread, newThread) => {
 //=====================================================
 
 async function fetchData(message) {
+    const [command, ...args] = message.content.slice(prefix.length).split(' ');
     const user_id = (message.mentions.members.size > 0) ? message.mentions.members.first().id : args[0];
     if (!user_id) return message.channel.send({ content: "エラー: メンバーが指定されていません\nIDかメンションで指定してください" });
     const member = await message.guild.members.fetch(user_id);
