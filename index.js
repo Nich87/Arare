@@ -24,7 +24,7 @@ client.on('messageCreate', async message => {
             if (!message.member.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) return message.channel.send("❌ 権限が不足しています。");
 
             const ban_member = await fetchData(message);
-            ban_member.ban();
+            ban_member.ban()
                 .then((banned_user) => {
                 return message.channel.send({ content: `${banned_user.user.tag} をBanしました` });
             })
