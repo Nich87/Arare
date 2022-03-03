@@ -225,7 +225,7 @@ client.on('messageCreate', async message => {
           icon_url: `${msg.author.displayAvatarURL({ format: 'png' })}`
         },
         description: `${msg.embeds[0] == undefined ? msg.content : msg.embeds[0].description }`,
-        timestamp: new Date();
+        timestamp: new Date()
       }]
     }))
     .catch(console.error);
