@@ -197,4 +197,38 @@ async function fetchData(message) {
     return member;
 }
 
+//メッセージURL展開(snowflakesについてよく知らないので正規表現)
+client.on('messageCreate', async message => {
+  const re = new RegExp('https://discord.com/channels/([0-9]{18})/([0-9]{18})/([0-9]{18})')
+  const results = message.content.match(re)
+  if (!results) {
+    return
+  };
+  const guild_id = results[1]
+  const channel_id = results[2]
+  const message_id = results[3]
+
+  const channelch = client.channels.cache.get(channel_id);
+  if (!channelch) {
+    return;
+  }
+
+  channelch.messages.fetch(message_id)
+    .then(msg => message.reply({
+      embeds: [{
+        footer: {
+          icon_url: `${msg.guild.iconURL() === null ? `https://cdn.discordapp.com/attachments/866870931141296138/942606993313660978/SCC.png` : msg.guild.iconURL()}`,
+          text: `${msg.channel.name}`
+        },
+        author: {
+          name: `${msg.author.username}`,
+          icon_url: `${msg.author.displayAvatarURL({ format: 'png' })}`
+        },
+        description: `${msg.embeds[0] == undefined ? msg.content : msg.embeds[0].description }`,
+        timestamp: new Date();
+      }]
+    }))
+    .catch(console.error);
+}); 
+
 client.login(process.env.token);
